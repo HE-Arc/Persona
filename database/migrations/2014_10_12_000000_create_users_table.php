@@ -22,14 +22,14 @@ class CreateUsersTable extends Migration
     			$table->string('password');
           $table->integer('country_id')->index()->unsigned();
           $table->foreign('country_id')->references('id')->on('countries')->onDelete('SET NULL');
-          $table->string('description');
-    			$table->char('gender', 1);
-    			$table->date('birthday');
-    			$table->string('profileimage');
-    			$table->boolean('onlinestatus')->default(0);
-    			$table->boolean('chatstatus')->default(1);
-            $table->rememberToken();
-            $table->timestamps();
+          //$table->string('description');
+    			//$table->char('gender', 1);
+    			//$table->date('birthday');
+    			//$table->string('profileimage');
+    			//$table->boolean('onlinestatus')->default(0);
+    			//$table->boolean('chatstatus')->default(1);
+          $table->rememberToken();
+          $table->timestamps();
         });
     }
 

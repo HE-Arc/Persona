@@ -11,15 +11,43 @@
                     <form class="form-horizontal" method="POST" action="{{ route('register') }}">
                         {{ csrf_field() }}
 
-                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">Name</label>
+                        <div class="form-group{{ $errors->has('lastname') ? ' has-error' : '' }}">
+                            <label for="lastname" class="col-md-4 control-label">Lastname</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
+                                <input id="lastname" type="text" class="form-control" name="lastname" value="{{ old('lastname') }}" required autofocus>
 
-                                @if ($errors->has('name'))
+                                @if ($errors->has('lastname'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
+                                        <strong>{{ $errors->first('lastname') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('firstname') ? ' has-error' : '' }}">
+                            <label for="firstname" class="col-md-4 control-label">Firstname</label>
+
+                            <div class="col-md-6">
+                                <input id="firstname" type="text" class="form-control" name="firstname" value="{{ old('firstname') }}" required autofocus>
+
+                                @if ($errors->has('firstname'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('firstname') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('alias') ? ' has-error' : '' }}">
+                            <label for="alias" class="col-md-4 control-label">Alias</label>
+
+                            <div class="col-md-6">
+                                <input id="alias" type="text" class="form-control" name="alias" value="{{ old('alias') }}" required autofocus>
+
+                                @if ($errors->has('alias'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('alias') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -61,20 +89,29 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="password-confirm" class="col-md-4 control-label">Select Country</label>
+                        <!-- value="{{ old('alias') }}" -->
+                        <div class="form-group{{ $errors->has('country') ? ' has-error' : '' }}">
+                            <label for="country" class="col-md-4 control-label">Select Country</label>
 
                             <div class="col-md-6">
-                              <select class="custom-select" id="country">
-                                <option selected>Choose...</option>
 
+                                <select class="form-control" name="country" id="country" required>
 
+                                    <option>Choose...</option>
+                                    @foreach ($countries as $country)
+                                        @if (old('country') == $country->id)
+                                            <option value="{{ $country->id }}" selected>{{ $country->name }}</option>
+                                        @else
+                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
 
-                                <!-- @foreach ($countries as $country)
-                                  <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                @endforeach -->
-
-                              </select>
+                                @if ($errors->has('country'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('country') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
 

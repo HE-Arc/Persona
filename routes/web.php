@@ -35,3 +35,8 @@ $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+//TODO Empecher l'accès si pas connecté ET user/profile ?
+Route::get('/profile', function () {
+    return view('profile');
+})->name('profile');

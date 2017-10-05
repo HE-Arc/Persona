@@ -11,15 +11,15 @@
                     <form class="form-horizontal" method="POST" action="{{ route('register') }}">
                         {{ csrf_field() }}
 
-                        <div class="form-group{{ $errors->has('lastname') ? ' has-error' : '' }}">
-                            <label for="lastname" class="col-md-4 control-label">Lastname</label>
+                        <div class="form-group{{ $errors->has('alias') ? ' has-error' : '' }}">
+                            <label for="alias" class="col-md-4 control-label">Alias</label>
 
                             <div class="col-md-6">
-                                <input id="lastname" type="text" class="form-control" name="lastname" value="{{ old('lastname') }}" required autofocus>
+                                <input id="alias" type="text" class="form-control" name="alias" value="{{ old('alias') }}" required autofocus>
 
-                                @if ($errors->has('lastname'))
+                                @if ($errors->has('alias'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('lastname') }}</strong>
+                                        <strong>{{ $errors->first('alias') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -39,15 +39,15 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('alias') ? ' has-error' : '' }}">
-                            <label for="alias" class="col-md-4 control-label">Alias</label>
+                        <div class="form-group{{ $errors->has('lastname') ? ' has-error' : '' }}">
+                            <label for="lastname" class="col-md-4 control-label">Lastname</label>
 
                             <div class="col-md-6">
-                                <input id="alias" type="text" class="form-control" name="alias" value="{{ old('alias') }}" required autofocus>
+                                <input id="lastname" type="text" class="form-control" name="lastname" value="{{ old('lastname') }}" required autofocus>
 
-                                @if ($errors->has('alias'))
+                                @if ($errors->has('lastname'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('alias') }}</strong>
+                                        <strong>{{ $errors->first('lastname') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -91,7 +91,7 @@
 
                         <!-- value="{{ old('alias') }}" -->
                         <div class="form-group{{ $errors->has('country') ? ' has-error' : '' }}">
-                            <label for="country" class="col-md-4 control-label">Select Country</label>
+                            <label for="country" class="col-md-4 control-label">Select Your Country</label>
 
                             <div class="col-md-6">
 
@@ -99,6 +99,7 @@
 
                                     <option>Choose...</option>
                                     @foreach ($countries as $country)
+                                        <!-- TODO : optimisation possible du test ? -->
                                         @if (old('country') == $country->id)
                                             <option value="{{ $country->id }}" selected>{{ $country->name }}</option>
                                         @else
@@ -115,6 +116,39 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
+                            <label for="gender" class="col-md-4 control-label">Select Your Gender</label>
+
+                            <div class="col-md-6">
+                                <!-- TODO : optimisation possible du test ? -->
+                                <select class="form-control" name="gender" id="gender" required>
+                                    <option>Choose...</option>
+                                    <option value="m" @if (old('gender') == 'm')selected @endif >Male</option>
+                                    <option value="f" @if (old('gender') == 'f')selected @endif>Female</option>
+                                </select>
+
+                                @if ($errors->has('gender'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('gender') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+
+                        <div class="form-group{{ $errors->has('birthday') ? ' has-error' : '' }}">
+                            <label for="birthday" class="col-md-4 control-label">Birthday</label>
+
+                            <div class="col-md-6">
+                                <input id="birthday" type="date" class="form-control" name="birthday" value="{{ old('birthday') }}" required autofocus>
+
+                                @if ($errors->has('birthday'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('birthday') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
 
 
                         <div class="form-group">

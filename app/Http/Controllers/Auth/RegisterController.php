@@ -11,6 +11,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
 
+//Pour les validations
+use Illuminate\Validation\Rule;
+
 class RegisterController extends Controller
 {
     /*
@@ -57,7 +60,10 @@ class RegisterController extends Controller
             'alias' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'country' => 'required|integer'
+            'country' => 'required|integer', //TODO à valider
+            'gender' => ['required', Rule::in(['m', 'f'])],
+            'birthday' => 'required|date' //TODO à valider
+
 
         ]);
     }
@@ -76,7 +82,9 @@ class RegisterController extends Controller
             'alias' => $data['alias'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'country_id' => $data['country']
+            'country_id' => $data['country'],
+            'gender' => $data['gender'],
+            'birthday' => $data['birthday']
          ]);
     }
 

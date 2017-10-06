@@ -57,12 +57,12 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'lastname' => 'required|string|max:255',
             'firstname' => 'required|string|max:255',
-            'alias' => 'required|string|max:255',
+            'alias' => 'required|string|max:20|unique:users', //TODO : Confirmation en direct ?
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'country' => 'required|integer', //TODO à valider
+            'country' => 'required|exists:countries,id',
             'gender' => ['required', Rule::in(['m', 'f'])],
-            'birthday' => 'required|date' //TODO à valider
+            'birthday' => 'required|date'
 
 
         ]);

@@ -1,5 +1,7 @@
 <?php
 
+use App\User;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,7 +30,7 @@ $this->post('register', 'Auth\RegisterController@register');
 
 // Password Reset Routes...
 $this->get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
- $this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+$this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
 $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 
@@ -36,7 +38,8 @@ $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-//TODO Empecher l'accès si pas connecté ET user/profile ?
-Route::get('/profile', function () {
-    return view('profile');
+Route::get('/user/{alias}', function ($alias) {
+    $user = User::where('alias', $alias)->firstOrFail();
+    return view('profile', compact('user'));
+    //return view('profile');
 })->name('profile');

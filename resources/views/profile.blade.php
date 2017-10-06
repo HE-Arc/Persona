@@ -8,13 +8,20 @@
                 <div class="panel-heading">My Profile</div>
                 <div class="panel-body">
                     <ul>
-                      <li>{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</li>
+                      <!-- TODO : Faire une page différente pour le profil de l'utilisateur connecté-->
+                      <li>{{ $user->firstname }} {{ $user->lastname }}</li>
+                      <li>{{ $user->alias }}</li>
+                      <li>{{ $user->email }}</li>
+                      <li>{{ Carbon\Carbon::parse($user->birthday)->format('jS \\of F Y') }}</li>
+                      <li>{{ $user->gendertext }}</li>
+                      <li>{{ $user->country }}</li>
+
+                      <!-- <li>{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</li>
                       <li>{{ Auth::user()->alias }}</li>
                       <li>{{ Auth::user()->email }}</li>
                       <li>{{ Auth::user()->birthday }}</li>
                       <li>{{ Auth::user()->gender }}</li>
-                      <li>{{ Auth::user()->country_id }}</li>
-                      <!-- TODO : Faire des méthodes dans model pour gender et country_id pour récupérer le vrai contenu -->
+                      <li>{{ Auth::user()->country_id }}</li> -->
                     </ul>
                 </div>
             </div>

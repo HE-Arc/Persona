@@ -53,7 +53,7 @@
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="{{ route('profile') }}">My Profile</a>
+                                        <a href="{{ route('profile', Auth::user()->alias) }}">My Profile</a>
                                     </li>
                                     <li>
                                         <a href="{{ route('logout') }}"

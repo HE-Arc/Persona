@@ -90,17 +90,17 @@
                         </div>
 
                         <!-- value="{{ old('alias') }}" -->
-                        <div class="form-group{{ $errors->has('country') ? ' has-error' : '' }}">
-                            <label for="country" class="col-md-4 control-label">Select Your Country</label>
+                        <div class="form-group{{ $errors->has('country_id') ? ' has-error' : '' }}">
+                            <label for="country_id" class="col-md-4 control-label">Select Your Country</label>
 
                             <div class="col-md-6">
 
-                                <select class="form-control" name="country" id="country" required>
+                                <select class="form-control" name="country_id" id="country_id" required>
 
                                     <option>Choose...</option>
                                     @foreach ($countries as $country)
                                         <!-- TODO : optimisation possible du test ? -->
-                                        @if (old('country') == $country->id)
+                                        @if (old('country_id') == $country->id)
                                             <option value="{{ $country->id }}" selected>{{ $country->name }}</option>
                                         @else
                                             <option value="{{ $country->id }}">{{ $country->name }}</option>
@@ -108,9 +108,9 @@
                                     @endforeach
                                 </select>
 
-                                @if ($errors->has('country'))
+                                @if ($errors->has('country_id'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('country') }}</strong>
+                                        <strong>{{ $errors->first('country_id') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -136,12 +136,12 @@
                         </div>
 
 
-                        <div class="form-group{{ $errors->has('personality') ? ' has-error' : '' }}">
-                            <label for="personality" class="col-md-4 control-label">Select Your Personality</label>
+                        <div class="form-group{{ $errors->has('personality_id') ? ' has-error' : '' }}">
+                            <label for="personality_id" class="col-md-4 control-label">Select Your Personality</label>
 
                             <div class="col-md-6">
 
-                                <select class="form-control" name="personality" id="personality" required>
+                                <select class="form-control" name="personality_id" id="personality_id" required>
 
                                     <option>Choose...</option>
                                     @foreach ($personalities as $personality)
@@ -154,9 +154,9 @@
                                     @endforeach
                                 </select>
 
-                                @if ($errors->has('personality'))
+                                @if ($errors->has('personality_id'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('personality') }}</strong>
+                                        <strong>{{ $errors->first('personality_id') }}</strong>
                                     </span>
                                 @endif
                             </div>

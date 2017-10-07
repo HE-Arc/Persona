@@ -8,6 +8,10 @@ use App\Personality;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+
+//Pour les validations
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -21,6 +25,26 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
+    }
+
+    /**
+     * Get a validator for an incoming edit profile request.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'lastname' => 'required|string|max:255',
+            'firstname' => 'required|string|max:255',
+            'alias' => 'string|max:20|unique:users', //TODO : Confirmation en direct ?
+            'email' => 'string|email|max:255|unique:users',
+            'country_id' => 'required|exists:countries,id',
+            'personality_id' => 'required|exists:personalities,id',
+            'gender' => ['required', Rule::in(['m', 'f'])],
+            'birthday' => 'required|date'
+        ]);
     }
 
     /**
@@ -47,7 +71,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($alias)
+    public function showEdit($alias)
     {
         $user = Auth::user();
 
@@ -70,9 +94,37 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updateFromEdit(Request $request, $alias)
     {
-        //
+        $user = Auth::user();
+
+        if($user->alias == $alias){
+
+             if($request->email == $user->email){
+                unset($request['email']);
+             }
+
+             if($request->alias == $alias){
+                unset($request['alias']);
+             }
+             else{
+               $alias = $request->alias;
+             }
+
+             //$user = User::where('alias', $alias)->firstOrFail();
+
+             $this->validator($request->all())->validate();
+
+
+             // this 'fills' the user model with all fields of the Input that are fillable
+             $user->fill($request->all());
+             $user->save();
+
+             return redirect()->route('profile', ['alias' => $alias]);
+        }
+        else{
+            return abort(404);
+        }
     }
 
     /**

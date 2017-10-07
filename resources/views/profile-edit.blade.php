@@ -10,7 +10,7 @@
                 </div>
                 <!-- TODO : gérer le 's pour les alias qui finissent en S -->
                 <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('register') }}">
+                    <form class="form-horizontal" method="POST" action="{{ route('profile-edit', Auth::user()->alias) }}">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('alias') ? ' has-error' : '' }}">
@@ -69,12 +69,12 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('country') ? ' has-error' : '' }}">
-                            <label for="country" class="col-md-4 control-label">Select Your Country</label>
+                        <div class="form-group{{ $errors->has('country_id') ? ' has-error' : '' }}">
+                            <label for="country_id" class="col-md-4 control-label">Select Your Country</label>
 
                             <div class="col-md-6">
 
-                                <select class="form-control" name="country" id="country" required>
+                                <select class="form-control" name="country_id" id="country_id" required>
 
                                     <option>Choose...</option>
                                     @foreach ($countries as $country)
@@ -87,9 +87,9 @@
                                     @endforeach
                                 </select>
 
-                                @if ($errors->has('country'))
+                                @if ($errors->has('country_id'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('country') }}</strong>
+                                        <strong>{{ $errors->first('country_id') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -115,12 +115,12 @@
                         </div>
 
 
-                        <div class="form-group{{ $errors->has('personality') ? ' has-error' : '' }}">
-                            <label for="personality" class="col-md-4 control-label">Select Your Personality</label>
+                        <div class="form-group{{ $errors->has('personality_id') ? ' has-error' : '' }}">
+                            <label for="personality_id" class="col-md-4 control-label">Select Your Personality</label>
 
                             <div class="col-md-6">
 
-                                <select class="form-control" name="personality" id="personality" required>
+                                <select class="form-control" name="personality_id" id="personality_id" required>
 
                                     <option>Choose...</option>
                                     @foreach ($personalities as $personality)
@@ -133,9 +133,9 @@
                                     @endforeach
                                 </select>
 
-                                @if ($errors->has('personality'))
+                                @if ($errors->has('personality_id'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('personality') }}</strong>
+                                        <strong>{{ $errors->first('personality_id') }}</strong>
                                     </span>
                                 @endif
                             </div>

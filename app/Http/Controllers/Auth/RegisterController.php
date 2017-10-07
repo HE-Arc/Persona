@@ -61,8 +61,8 @@ class RegisterController extends Controller
             'alias' => 'required|string|max:20|unique:users', //TODO : Confirmation en direct ?
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'country' => 'required|exists:countries,id',
-            'personality' => 'required|exists:personalities,id',
+            'country_id' => 'required|exists:countries,id',
+            'personality_id' => 'required|exists:personalities,id',
             'gender' => ['required', Rule::in(['m', 'f'])],
             'birthday' => 'required|date'
 
@@ -85,8 +85,8 @@ class RegisterController extends Controller
             'alias' => $data['alias'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'country_id' => $data['country'],
-            'personality_id' => $data['personality'],
+            'country_id' => $data['country_id'],
+            'personality_id' => $data['personality_id'],
             'gender' => $data['gender'],
             'birthday' => $data['birthday']
          ]);
@@ -115,6 +115,7 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
+
         $this->validator($request->all())->validate();
 
         event(new Registered($user = $this->create($request->all())));

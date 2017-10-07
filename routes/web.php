@@ -35,9 +35,10 @@ $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm
 $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 
 
-
+//TODO : Passer les middleware('auth') dans les controllers
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/user/{alias}', 'UserController@show')->name('profile');
+Route::get('/user/{alias}', 'UserController@show')->middleware('auth')->name('profile');
 
-Route::get('/user/{alias}/edit', 'UserController@edit')->middleware('auth')->name('profile-edit');
+Route::get('/user/{alias}/edit', 'UserController@showEdit')->middleware('auth')->name('profile-edit');
+Route::post('/user/{alias}/edit', 'UserController@updateFromEdit')->middleware('auth');

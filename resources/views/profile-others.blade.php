@@ -5,7 +5,8 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">My Profile</div>
+                <div class="panel-heading">{{ $user->alias }}'s Profile</div>
+                <!-- TODO : gérer le 's pour les alias qui finissent en S -->
                 <div class="panel-body">
                     <ul>
                       <!-- TODO : Faire une page différente pour le profil de l'utilisateur connecté-->
@@ -17,12 +18,7 @@
                       <li>{{ $user->country->name }}</li>
                       <li>{{ $user->personality->type }}</li>
 
-                      <!-- <li>{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</li>
-                      <li>{{ Auth::user()->alias }}</li>
-                      <li>{{ Auth::user()->email }}</li>
-                      <li>{{ Auth::user()->birthday }}</li>
-                      <li>{{ Auth::user()->gender }}</li>
-                      <li>{{ Auth::user()->country_id }}</li> -->
+          
                     </ul>
                 </div>
             </div>

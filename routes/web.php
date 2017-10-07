@@ -38,8 +38,6 @@ $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/user/{alias}', function ($alias) {
-    $user = User::where('alias', $alias)->firstOrFail();
-    return view('profile', compact('user'));
-    //return view('profile');
-})->name('profile');
+Route::get('/user/{alias}', 'UserController@show')->name('profile');
+
+Route::get('/user/{alias}/edit', 'UserController@edit')->middleware('auth')->name('profile-edit');

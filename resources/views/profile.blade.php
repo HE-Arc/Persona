@@ -14,7 +14,8 @@
                       <li>{{ $user->email }}</li>
                       <li>{{ Carbon\Carbon::parse($user->birthday)->format('jS \\of F Y') }}</li>
                       <li>{{ $user->gendertext }}</li>
-                      <li>{{ $user->country }}</li>
+                      <li>{{ $user->country->name }}</li>
+                      <li>{{ $user->personality->type }}</li>
 
                       <!-- <li>{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</li>
                       <li>{{ Auth::user()->alias }}</li>

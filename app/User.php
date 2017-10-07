@@ -12,7 +12,11 @@ class User extends Authenticatable
     use Notifiable;
 
     public function getCountryAttribute(){
-        return Country::find($this->country_id)->name;
+        return Country::find($this->country_id);
+    }
+
+    public function getPersonalityAttribute(){
+        return Personality::find($this->personality_id);
     }
 
     public function getGenderTextAttribute(){
@@ -26,7 +30,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'lastname', 'email', 'password', 'alias', 'country_id', 'firstname', 'gender', 'birthday'
+        'lastname', 'email', 'password', 'alias', 'country_id', 'firstname', 'gender', 'birthday', 'personality_id'
     ];
 
     /**

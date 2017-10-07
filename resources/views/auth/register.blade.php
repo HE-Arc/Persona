@@ -136,6 +136,33 @@
                         </div>
 
 
+                        <div class="form-group{{ $errors->has('personality') ? ' has-error' : '' }}">
+                            <label for="personality" class="col-md-4 control-label">Select Your Personality</label>
+
+                            <div class="col-md-6">
+
+                                <select class="form-control" name="personality" id="personality" required>
+
+                                    <option>Choose...</option>
+                                    @foreach ($personalities as $personality)
+                                        <!-- TODO : optimisation possible du test ? -->
+                                        @if (old('personality') == $personality->id)
+                                            <option value="{{ $personality->id }}" selected>{{ $personality->type }}</option>
+                                        @else
+                                            <option value="{{ $personality->id }}">{{ $personality->type }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+
+                                @if ($errors->has('personality'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('personality') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+
                         <div class="form-group{{ $errors->has('birthday') ? ' has-error' : '' }}">
                             <label for="birthday" class="col-md-4 control-label">Birthday</label>
 

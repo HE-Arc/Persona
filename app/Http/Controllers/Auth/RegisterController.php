@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Country;
+use App\Personality;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -61,8 +62,10 @@ class RegisterController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'country' => 'required|exists:countries,id',
+            'personality' => 'required|exists:personalities,id',
             'gender' => ['required', Rule::in(['m', 'f'])],
             'birthday' => 'required|date'
+
 
 
         ]);
@@ -83,6 +86,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'country_id' => $data['country'],
+            'personality_id' => $data['personality'],
             'gender' => $data['gender'],
             'birthday' => $data['birthday']
          ]);
@@ -97,8 +101,9 @@ class RegisterController extends Controller
     {
 
         $countries = Country::all();
+        $personalities = Personality::all();
 
-        return view('auth/register', compact("countries"));
+        return view('auth/register', compact("countries", "personalities"));
     }
 
 

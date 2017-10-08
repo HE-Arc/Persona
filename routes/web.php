@@ -40,5 +40,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/user/{alias}', 'UserController@show')->middleware('auth')->name('profile');
 
+Route::get('/user/{alias}/add', 'UserController@addFriend')->middleware('auth')->name('add-friend');
+
 Route::get('/user/{alias}/edit', 'UserController@showEdit')->middleware('auth')->name('profile-edit');
 Route::post('/user/{alias}/edit', 'UserController@updateFromEdit')->middleware('auth');

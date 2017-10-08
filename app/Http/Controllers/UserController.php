@@ -16,15 +16,14 @@ use Illuminate\Validation\Rule;
 class UserController extends Controller
 {
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function addFriend($alias)
     {
-        //
+        if($alias != Auth::user()->alias){
+            echo ('Ajout de ' . $alias . ' dans vos amis.');
+        }
+        else{
+            return abort(404);
+        }
     }
 
     /**

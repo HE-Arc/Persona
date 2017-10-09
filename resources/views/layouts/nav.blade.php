@@ -30,6 +30,7 @@
                     <li><a href="{{ route('login') }}">Login</a></li>
                     <li><a href="{{ route('register') }}">Register</a></li>
                 @else
+
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             {{ Auth::user()->firstname }} {{ Auth::user()->lastname }} <span class="caret"></span>
@@ -54,6 +55,16 @@
                     </li>
                 @endguest
             </ul>
+            <div class="col-sm-3 col-md-3 pull-right">
+                <form class="navbar-form" role="search" action="{{ route('search') }}" method="GET">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" id="search" name="search" autocomplete="off" required>
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search" id="submit_search" name="submit_search"></i></button>
+                    </div>
+                </div>
+                </form>
+            </div>
         </div>
     </div>
 </nav>

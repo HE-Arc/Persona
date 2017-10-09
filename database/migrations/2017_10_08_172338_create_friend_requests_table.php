@@ -20,6 +20,7 @@ class CreateFriendRequestsTable extends Migration
             $table->foreign('requester_id')->references('id')->on('users')->onDelete('CASCADE');
             $table->integer('requested_id')->index()->unsigned();
             $table->foreign('requested_id')->references('id')->on('users')->onDelete('CASCADE');
+            $table->boolean('friendship')->default(false);
             $table->timestamps();
         });
     }

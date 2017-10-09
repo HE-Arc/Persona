@@ -7,8 +7,14 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     {{ $user->alias }}'s Profile
-                    @if (\App\FriendRequest::isFriendRequestBetweenAuthAndUser(Request::segment(2)))
-                        <a href="{{ route('remove-friend', Request::segment(2)) }}" class="pull-right"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel friend request</a>
+                    @if ($result = \App\FriendRequest::isFriendRequestBetweenAuthAndUser(Request::segment(2)))
+                        <a href="{{ route('remove-friend', Request::segment(2)) }}" class="pull-right"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            @if ($result->friendship)
+                                Cancel friendship
+                            @else
+                                Cancel friend request
+                            @endif
+                        </a>
                     @else
                         <a href="{{ route('add-friend', Request::segment(2)) }}" class="pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add as friend</a>
                     @endif

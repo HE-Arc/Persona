@@ -17,11 +17,12 @@ class FriendRequest extends Model
     ];
 
 
-    public static function isFriendRequestBetweenTwoUsers($requester_id, $requested_id){
-        return !FriendRequest::where('requester_id', $requester_id)->where('requested_id', $requested_id)->get()->isEmpty();
+    public static function getFriendRequestBetweenTwoUsers($requester_id, $requested_id){
+        return FriendRequest::where('requester_id', $requester_id)->where('requested_id', $requested_id)->first();
     }
 
     public static function isFriendRequestBetweenAuthAndUser($alias){
-        return FriendRequest::isFriendRequestBetweenTwoUsers(Auth::user()->id, User::where('alias', $alias)->first()->id);
+        return FriendRequest::getFriendRequestBetweenTwoUsers(Auth::user()->id, User::where('alias', $alias)->first()->id);
     }
+
 }

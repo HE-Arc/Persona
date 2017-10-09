@@ -20,6 +20,27 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
+
+    public function showFriendRequest($alias){
+
+        $user = Auth::user();
+
+        if($user->alias == $alias){
+
+            $others_friend_requests = FriendRequest::where('requested_id', $user->id)->where('friendship', 0)->get();
+
+            $my_friend_requests = FriendRequest::where('requester_id', $user->id)->where('friendship', 0)->get();
+
+            $my_friends = FriendRequest::where('requester_id', $user->id)->where('friendship', 1)->get();
+
+            return view('friend-requests', compact('others_friend_requests', 'my_friend_requests', 'my_friends'));
+        }
+        else{
+            return abort(404);
+        }
+    }
+
+
     public function removeFriend($friendAlias)
     {
         //Vérifie qu'on ne s'ajoute pas soi-même en ami
@@ -27,12 +48,27 @@ class UserController extends Controller
 
             $friendId = User::where('alias', $friendAlias)->firstOrFail()->id;
 
-            if(FriendRequest::where('requester_id', Auth::user()->id)->where('requested_id', $friendId)->delete()){
-                $msg = 'Friend request to ' . $friendAlias . ' has been successfully canceled';
+            // if(FriendRequest::where('requester_id', Auth::user()->id)->where('requested_id', $friendId)->delete()){
+            //     $msg = 'Friend request to ' . $friendAlias . ' has been successfully canceled';
+            //
+            //     if(FriendRequest::where('requester_id', $friendId )->where('requested_id', Auth::user()->id)->delete()){
+            //         $msg = 'Friendship with ' . $friendAlias . ' has been successfully canceled';
+            //     }
+            // }
 
-                if(FriendRequest::where('requester_id', $friendId )->where('requested_id', Auth::user()->id)->delete()){
-                    $msg = 'Friendship with ' . $friendAlias . ' has been successfully canceled';
-                }
+            //TODO : Passer les multiples where dans un tableau
+
+
+            if(FriendRequest::where('requester_id', Auth::user()->id)->where('requested_id', $friendId)->where('friendship', 1)->delete()){
+                FriendRequest::where('requested_id', Auth::user()->id)->where('requester_id', $friendId)->where('friendship', 1)->delete();
+                $msg = 'Friendship with ' . $friendAlias . ' has been canceled.';
+            }
+            elseif(FriendRequest::where('requester_id', Auth::user()->id)->where('requested_id', $friendId)->where('friendship', 0)->delete()){
+                $msg = 'Friend request to ' . $friendAlias . ' has been canceled.';
+            }
+            else{
+                FriendRequest::where('requested_id', Auth::user()->id)->where('requester_id', $friendId)->where('friendship', 0)->delete();
+                $msg = 'Friend request from ' . $friendAlias . ' has been declined.';
             }
 
             Session::flash('status-success', $msg);

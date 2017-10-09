@@ -39,6 +39,9 @@
                                 <a href="{{ route('profile', Auth::user()->alias) }}">My Profile</a>
                             </li>
                             <li>
+                                <a href="{{ route('friend-requests', Auth::user()->alias) }}">Friend Requests</a>
+                            </li>
+                            <li>
                                 <a href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                              document.getElementById('logout-form').submit();">

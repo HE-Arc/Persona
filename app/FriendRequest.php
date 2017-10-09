@@ -25,4 +25,5 @@ class FriendRequest extends Model
         return FriendRequest::getFriendRequestBetweenTwoUsers(Auth::user()->id, User::where('alias', $alias)->first()->id);
     }
 
+
 }

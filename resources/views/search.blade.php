@@ -12,7 +12,7 @@
                 <div class="panel-body">
                     <ul>
                         @foreach ($results as $result)
-                            <li>{{ $result->alias }}</li>
+                            <li><a href="{{ route('profile', $result->alias) }}">{{ $result->alias }}</a></li>
                         @endforeach
                     </ul>
                 </div>

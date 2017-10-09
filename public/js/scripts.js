@@ -11,12 +11,10 @@ $(document).ready(function(){
         var src = $this.data('action');
 
         $this.autocomplete({
-            source: src
-            // minLength: 2,
-            // select: function(event, ui) {
-            //     $this.val(ui.item.value);
-            //     $('#search').val(ui.item.id);
-            //}
+            source: src,
+            select: function(event, ui) {
+                window.location.href = ui.item.url;
+            }
         });
     });
 });

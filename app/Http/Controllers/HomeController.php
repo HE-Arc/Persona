@@ -35,7 +35,16 @@ class HomeController extends Controller
     public function autocomplete()
     {
         $term = request('term');
-        $results = User::where('alias', 'LIKE', '%'.$term.'%')->get(['id', 'alias as value']);
-        return response()->json($results);
+        $results = User::where('alias', 'LIKE', '%'.$term.'%')->get(['alias as label']);
+
+        // TODO : Fais le job mais un peu dégueu...
+        $results_array = [];
+        foreach ($results as $result) {
+            $url = route('profile', $result["label"]);
+            $array = ["label" => $result["label"], "url" => $url];
+            array_push($results_array, $array);
+        }
+
+        return response()->json($results_array);
     }
 }

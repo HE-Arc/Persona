@@ -5,21 +5,68 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Country;
 use App\Personality;
+use App\FriendRequest;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\FriendRequestController;
+
+
 
 //Pour les validations
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-
-    public function addFriend($alias)
+    public function removeFriend($friendAlias)
     {
-        if($alias != Auth::user()->alias){
-            echo ('Ajout de ' . $alias . ' dans vos amis.');
+        //Vérifie qu'on ne s'ajoute pas soi-même en ami
+        if($friendAlias != Auth::user()->alias){
+
+            $friendId = User::where('alias', $friendAlias)->firstOrFail()->id;
+
+            if(FriendRequest::where('requester_id', Auth::user()->id)->where('requested_id', $friendId)->delete()){
+                $msg = 'Friend request to ' . $friendAlias . ' has been successfully canceled';
+                Session::flash('status-success', $msg);
+                return redirect()->back();
+            }
+
+
+        }
+        else{
+            return abort(404);
+        }
+    }
+
+
+    public function addFriend($friendAlias)
+    {
+        //Vérifie qu'on ne s'ajoute pas soi-même en ami
+        if($friendAlias != Auth::user()->alias){
+
+            $friendId = User::where('alias', $friendAlias)->firstOrFail()->id;
+
+            //TODO : Cas de l'autre sens à traiter
+            //Test si une telle requête d'ami existe deja entre les deux personnes
+            if(FriendRequest::isFriendRequestBetweenTwoUsers(Auth::user()->id, $friendId)){
+                Session::flash('status-danger', 'You already requested this user to be your friend!');
+                return redirect()->back();
+            }
+
+
+            FriendRequest::create([
+                'requester_id' => Auth::user()->id,
+                'requested_id' => $friendId
+            ]);
+
+            $msg = 'Friend request sent to ' . $friendAlias . '!';
+            Session::flash('status-success', $msg);
+
+            echo ('super salami');
+
+            return redirect()->back();
         }
         else{
             return abort(404);
@@ -35,6 +82,7 @@ class UserController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
+            //TODO : Fail alias email
             'lastname' => 'required|string|max:255',
             'firstname' => 'required|string|max:255',
             'alias' => 'string|max:20|unique:users', //TODO : Confirmation en direct ?
@@ -54,6 +102,7 @@ class UserController extends Controller
      */
     public function show($alias)
     {
+        //TODO : à vérifier le &&
         if(Auth::check() && $alias == Auth::user()->alias){
             $user = Auth::user();
             return view('profile-auth', compact('user'));

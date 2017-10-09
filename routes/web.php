@@ -44,6 +44,7 @@ Route::get('/user/search', 'SearchController@search')->name('search');
 Route::get('/user/{alias}', 'UserController@show')->middleware('auth')->name('profile');
 
 Route::get('/user/{alias}/add', 'UserController@addFriend')->middleware('auth')->name('add-friend');
+Route::get('/user/{alias}/remove', 'UserController@removeFriend')->middleware('auth')->name('remove-friend');
 
 Route::get('/user/{alias}/edit', 'UserController@showEdit')->middleware('auth')->name('profile-edit');
 Route::post('/user/{alias}/edit', 'UserController@updateFromEdit')->middleware('auth');

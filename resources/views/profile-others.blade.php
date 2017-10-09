@@ -7,10 +7,15 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     {{ $user->alias }}'s Profile
-                    <a href="{{ route('add-friend', Request::segment(2)) }}" class="pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add as friend</a>
+                    @if (\App\FriendRequest::isFriendRequestBetweenAuthAndUser(Request::segment(2)))
+                        <a href="{{ route('remove-friend', Request::segment(2)) }}" class="pull-right"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel friend request</a>
+                    @else
+                        <a href="{{ route('add-friend', Request::segment(2)) }}" class="pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add as friend</a>
+                    @endif
                 </div>
                 <!-- TODO : gérer le 's pour les alias qui finissent en S -->
                 <div class="panel-body">
+                    @include('layouts.flash_message')
                     <ul>
                         <!-- TODO : Faire une page différente pour le profil de l'utilisateur connecté-->
                         <li>{{ $user->firstname }} {{ $user->lastname }}</li>

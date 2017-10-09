@@ -42,6 +42,20 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+    * Returns three random people from the database
+    *
+    */
+    public static function getRandomFriends() {
+        return User::inRandomOrder()->limit(3)->get();
+    }
 
+    /**
+    * Returns three personality people from the database
+    *
+    */
+    public static function getPersonalityFriends($personality) {
+        return User::where('personality_id', $personality)->inRandomOrder()->limit(3)->get();
+    }
 
 }

@@ -7,21 +7,23 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     {{ $user->alias }}'s Profile
-                    @if ($result = \App\FriendRequest::isFriendRequestBetweenAuthAndUser(Request::segment(2)))
-                        <a href="{{ route('remove-friend', Request::segment(2)) }}" class="pull-right"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                            @if ($result->friendship)
+                    <!-- Request::segment(2) -->
+                    @if ($relation = \App\FriendRequest::isFriendRequestBetweenAuthAndUser($user->alias))
+                        <a href="{{ route('remove-friend', $user->alias) }}" class="pull-right"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            @if ($relation->friendship)
                                 Cancel friendship
                             @else
                                 Cancel friend request
                             @endif
                         </a>
                     @else
-                        <a href="{{ route('add-friend', Request::segment(2)) }}" class="pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add as friend</a>
+                        <a href="{{ route('add-friend', $user->alias) }}" class="pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add as friend</a>
                     @endif
                 </div>
                 <!-- TODO : gérer le 's pour les alias qui finissent en S -->
                 <div class="panel-body">
                     @include('layouts.flash_message')
+                    @if(!empty($relation) && $relation->friendship)<p>Your became friends with {{$user->alias}} {{ $relation->updated_at->diffForHumans() }}</p>@endif
                     <ul>
                         <!-- TODO : Faire une page différente pour le profil de l'utilisateur connecté-->
                         <li>{{ $user->firstname }} {{ $user->lastname }}</li>

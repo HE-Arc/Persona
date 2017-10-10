@@ -68,6 +68,7 @@ class User extends Authenticatable
         $friend_list = array();
 
         foreach ($request_list as $request){
+            $friend_list[] = User::find($request->requested_id);
         }
 
         return $friend_list;

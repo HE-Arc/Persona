@@ -23,6 +23,13 @@ use Illuminate\Validation\Rule;
 class UserController extends Controller
 {
 
+    public function showFriends($alias){
+
+        $user = User::where('alias', $alias)->firstOrFail();
+
+        return view('friends', compact('user'));
+    }
+
     public function showFriendRequest($alias){
 
         $user = Auth::user();

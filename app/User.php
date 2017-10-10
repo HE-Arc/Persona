@@ -75,4 +75,12 @@ class User extends Authenticatable
         return $friend_list;
     }
 
+    public function isMyFriend($id){
+        return FriendRequest::where('requester_id', $id)->where('friendship', 1)->first();
+    }
+
+    public function getNumberOfFriendRequests(){
+        return FriendRequest::where('requested_id', $this->id)->where('friendship', 0)->count();
+    }
+
 }

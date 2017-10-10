@@ -14,7 +14,13 @@ use App\User;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    if(Auth::check()){
+        return view('home');
+    }
+    else{
+        return view('welcome');
+    }
+
 });
 
 // Auth::routes();
@@ -42,6 +48,7 @@ Route::get('/user/search', 'SearchController@search')->name('search');
 Route::get('/user/search/autocomplete', 'SearchController@autocomplete')->name('search-autocomplete');
 
 Route::get('/user/{alias}', 'UserController@show')->middleware('auth')->name('profile');
+
 Route::get('/user/{alias}/add', 'UserController@addFriend')->middleware('auth')->name('add-friend');
 Route::get('/user/{alias}/remove', 'UserController@removeFriend')->middleware('auth')->name('remove-friend');
 

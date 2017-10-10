@@ -8,10 +8,14 @@
                 <div class="panel-heading">My Friends</div>
                 <div class="panel-body">
                     @include('layouts.flash_message')
+                    <p><b>{{ count($friend_list) }} ami(s) au total</b></p>
                     <ul>
-                        @foreach ($user->getFriendList() as $friend)
+                        @foreach ($friend_list as $friend)
                             <li>
-                                <a href="{{ route('profile', $friend->alias) }}">{{ $friend->alias }}</a> - <a href="{{ route('remove-friend', $friend->alias) }}">Remove</a>
+                                <a href="{{ route('profile', $friend->alias) }}">{{ $friend->alias }}</a> ({{ $friend->firstname }} {{ $friend->lastname }})
+                                @if (Auth::user()->alias == $user->alias)
+                                      - <a href="{{ route('remove-friend', $friend->alias) }}">Remove</a>
+                                @endif
                             </li>
                         @endforeach
                     </ul>

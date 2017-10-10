@@ -23,7 +23,7 @@
                     <b>To (pending) :</b>
                     <ul>
                         @foreach ($my_friend_requests as $friend_request)
-                            <?php $requester_alias = \App\User::find($friend_request->requester_id)->alias ?>
+                            <?php $requester_alias = \App\User::find($friend_request->requested_id)->alias ?>
                             <li>
                                 Demande d'ami à : <a href="{{ route('profile', $requester_alias) }}">{{ $requester_alias }}</a> -
                                 <a href="{{ route('remove-friend', $requester_alias) }}">Cancel</a>

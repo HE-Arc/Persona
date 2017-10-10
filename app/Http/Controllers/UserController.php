@@ -27,7 +27,9 @@ class UserController extends Controller
 
         $user = User::where('alias', $alias)->firstOrFail();
 
-        return view('friends', compact('user'));
+        $friend_list = $user->getFriendList();
+
+        return view('friends', compact('user', 'friend_list'));
     }
 
     public function showFriendRequest($alias){

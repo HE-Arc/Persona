@@ -46,7 +46,7 @@ class User extends Authenticatable
     * Returns three random people from the database
     *
     */
-    public static function getRandomFriends() {
+    public static function getRandomSuggestions() {
         return User::inRandomOrder()->limit(3)->get();
     }
 
@@ -54,8 +54,23 @@ class User extends Authenticatable
     * Returns three personality people from the database
     *
     */
-    public static function getPersonalityFriends($personality) {
+    public static function getPersonalitySuggestions($personality) {
         return User::where('personality_id', $personality)->inRandomOrder()->limit(3)->get();
+    }
+
+    /**
+    * Returns friend list of the user
+    *
+    */
+    public function getFriendList() {
+        $request_list = FriendRequest::where('requester_id', $this->id)->where('friendship', 1)->get(['requested_id']);
+
+        $friend_list = array();
+
+        foreach ($request_list as $request){
+        }
+
+        return $friend_list;
     }
 
 }

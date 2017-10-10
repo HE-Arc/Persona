@@ -24,7 +24,7 @@
                     Random:
                     <ul class="list-inline">
                         <!-- TODO : Uitliser un use pour les models depuis les views -->
-                        @foreach (\App\User::getRandomFriends() as $randomFriend)
+                        @foreach (\App\User::getRandomSuggestions() as $randomFriend)
                             @if ($randomFriend != Auth::user())
                                 <li class="list-inline-item"><a href="{{ route('profile', $randomFriend->alias) }}">{{ $randomFriend->alias }}</a></li>
                             @endif
@@ -33,7 +33,7 @@
                     By personality:
                     <ul class="list-inline">
                         <!-- TODO : Uitliser un use pour les models depuis les views -->
-                        @foreach (\App\User::getPersonalityFriends(Auth::user()->personality_id) as $personalityFriend)
+                        @foreach (\App\User::getPersonalitySuggestions(Auth::user()->personality_id) as $personalityFriend)
                             @if ($personalityFriend != Auth::user())
                                 <li class="list-inline-item"><a href="{{ route('profile', $personalityFriend->alias) }}">{{ $personalityFriend->alias }}</a></li>
                             @endif

@@ -6,6 +6,8 @@ use App\User;
 use App\Country;
 use App\Personality;
 use App\FriendRequest;
+use App\Quality;
+use App\UserQuality;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -91,6 +93,7 @@ class UserController extends Controller
             'personality_id' => 'required|exists:personalities,id',
             'gender' => ['required', Rule::in(['m', 'f'])],
             'birthday' => 'required|date'
+            //'quality_id' => 'exists:qualities,id'
         ]);
     }
 
@@ -102,14 +105,16 @@ class UserController extends Controller
      */
     public function show($alias)
     {
-        //TODO : à vérifier le &&
-        if(Auth::check() && $alias == Auth::user()->alias){
+        $user = User::where('alias', $alias)->firstOrFail();
+        $user_qualities = UserQuality::where('user_id',$user->id)->get();
+
+        //TODO : pas dry
+        if($alias == Auth::user()->alias){
             $user = Auth::user();
-            return view('profile-auth', compact('user'));
+            return view('profile-auth', compact('user', 'user_qualities'));
         }
         else{
-            $user = User::where('alias', $alias)->firstOrFail();
-            return view('profile-others', compact('user'));
+            return view('profile-others', compact('user', 'user_qualities'));
         }
     }
 
@@ -127,8 +132,17 @@ class UserController extends Controller
 
             $countries = Country::all();
             $personalities = Personality::all();
+            $qualities = Quality::all();
 
-            return view('profile-edit', compact('user', 'countries', 'personalities'));
+            $users_qualtities = UserQuality::where('user_id', $user->id)->get();
+
+            $arr_users_qualities=array();
+
+            foreach ($users_qualtities as $user_quality){
+                $arr_users_qualities[] = $user_quality->quality;
+            }
+
+            return view('profile-edit', compact('user', 'countries', 'personalities', 'qualities', 'arr_users_qualities'));
         }
         else{
             return abort(404);
@@ -167,6 +181,20 @@ class UserController extends Controller
              // this 'fills' the user model with all fields of the Input that are fillable
              $user->fill($request->all());
              $user->save();
+
+            //supprime toutes les qulaités de l'utilisateur.
+            UserQuality::where('user_id', $user->id)->delete();
+
+            $data=array();
+            foreach ($request->quality_id as $quality_id) {
+                $data[] = array('user_id'=>$user->id,
+                                'quality_id'=>$quality_id,
+                                "created_at" =>  \Carbon\Carbon::now(), # \Datetime()
+                                "updated_at" => \Carbon\Carbon::now(),  # \Datetime()
+                                );
+            }
+
+            UserQuality::insert($data);
 
              return redirect()->route('profile', ['alias' => $alias]);
         }

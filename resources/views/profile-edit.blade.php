@@ -156,6 +156,29 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('quality_id') ? ' has-error' : '' }}">
+                            <label for="quality_id" class="col-md-4 control-label">Select up to 8 qualities</label>
+
+                            <div class="col-md-6">
+
+                                <select class="form-control" name="quality_id[]" id="quality_id" multiple>
+                                    @foreach ($qualities as $quality)
+                                        <!-- TODO : optimisation possible du test ? -->
+                                        @if (in_array($quality->quality, $arr_users_qualities))
+                                            <option value="{{ $quality->id }}" selected>{{ $quality->quality }}</option>
+                                        @else
+                                            <option value="{{ $quality->id }}">{{ $quality->quality }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+
+                                @if ($errors->has('quality_id'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('quality_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">

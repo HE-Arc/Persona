@@ -37,9 +37,9 @@ $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 
 //TODO : Passer les middleware('auth') dans les controllers
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/home/autocomplete', 'HomeController@autocomplete')->name('search-autocomplete');
 
 Route::get('/user/search', 'SearchController@search')->name('search');
+Route::get('/user/search/autocomplete', 'SearchController@autocomplete')->name('search-autocomplete');
 
 Route::get('/user/{alias}', 'UserController@show')->middleware('auth')->name('profile');
 Route::get('/user/{alias}/add', 'UserController@addFriend')->middleware('auth')->name('add-friend');

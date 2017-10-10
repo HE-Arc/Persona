@@ -47,13 +47,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/user/search', 'SearchController@search')->name('search');
 Route::get('/user/search/autocomplete', 'SearchController@autocomplete')->name('search-autocomplete');
 
-Route::get('/user/{alias}', 'UserController@show')->middleware('auth')->name('profile');
+Route::get('/user/{alias}', 'UserController@showProfile')->middleware('auth')->name('profile');
 
-Route::get('/user/{alias}/add', 'UserController@addFriend')->middleware('auth')->name('add-friend');
-Route::get('/user/{alias}/remove', 'UserController@removeFriend')->middleware('auth')->name('remove-friend');
+Route::get('/user/{alias}/add', 'FriendRequestController@addFriend')->middleware('auth')->name('add-friend');
+Route::get('/user/{alias}/remove', 'FriendRequestController@removeFriend')->middleware('auth')->name('remove-friend');
 
-Route::get('/user/{alias}/friendrequests', 'UserController@showFriendRequest')->middleware('auth')->name('friend-requests');
-Route::get('/user/{alias}/friends', 'UserController@showFriends')->middleware('auth')->name('friends');
+Route::get('/user/{alias}/friendrequests', 'FriendRequestController@showFriendRequest')->middleware('auth')->name('friend-requests');
+Route::get('/user/{alias}/friends', 'FriendRequestController@showFriends')->middleware('auth')->name('friends');
 
 Route::get('/user/{alias}/edit', 'UserController@showEdit')->middleware('auth')->name('profile-edit');
 Route::post('/user/{alias}/edit', 'UserController@updateFromEdit')->middleware('auth');

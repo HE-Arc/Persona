@@ -8,7 +8,6 @@
                 <div class="panel-heading">
                     Search results
                 </div>
-                <!-- TODO : gérer le 's pour les alias qui finissent en S -->
                 <div class="panel-body">
                     <ul>
                         @foreach ($results as $result)

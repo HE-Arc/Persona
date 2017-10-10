@@ -41,7 +41,6 @@ $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm
 $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 
 
-//TODO : Passer les middleware('auth') dans les controllers
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/user/search', 'SearchController@search')->name('search');

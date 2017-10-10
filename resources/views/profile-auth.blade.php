@@ -11,7 +11,6 @@
                     <a href="{{ route('profile-edit', Auth::user()->alias) }}" class="pull-right"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</a>
 
                 </div>
-                <!-- TODO : gérer le 's pour les alias qui finissent en S -->
                 <div class="panel-body">
                     @include('profile-common')
                 </div>

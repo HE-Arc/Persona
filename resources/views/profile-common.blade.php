@@ -1,5 +1,4 @@
 <ul>
-    <!-- TODO : Faire une page différente pour le profil de l'utilisateur connecté-->
     @if ($user->isMyFriend($user->id))
         <li>{{ $user->firstname }} {{ $user->lastname }}</li>
     @endif

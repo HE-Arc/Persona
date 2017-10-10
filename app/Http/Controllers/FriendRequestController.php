@@ -62,8 +62,6 @@ class FriendRequestController extends Controller
             // }
 
             //TODO : Passer les multiples where dans un tableau
-
-
             if(FriendRequest::where('requester_id', Auth::user()->id)->where('requested_id', $friendId)->where('friendship', 1)->delete()){
                 FriendRequest::where('requested_id', Auth::user()->id)->where('requester_id', $friendId)->where('friendship', 1)->delete();
                 $msg = 'Friendship with ' . $friendAlias . ' has been canceled.';
@@ -94,7 +92,6 @@ class FriendRequestController extends Controller
 
             $friendId = User::where('alias', $friendAlias)->firstOrFail()->id;
 
-            //TODO : Cas de l'autre sens à traiter
             //Test si une telle requête d'ami existe deja entre les deux personnes
             if(FriendRequest::getFriendRequestBetweenTwoUsers(Auth::user()->id, $friendId)){
                 Session::flash('status-danger', 'You already requested this user to be your friend!');

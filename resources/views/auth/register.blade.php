@@ -99,12 +99,7 @@
 
                                     <option>Choose...</option>
                                     @foreach ($countries as $country)
-                                        <!-- TODO : optimisation possible du test ? -->
-                                        @if (old('country_id') == $country->id)
-                                            <option value="{{ $country->id }}" selected>{{ $country->name }}</option>
-                                        @else
-                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                        @endif
+                                        <option value="{{ $country->id }}" {{ (old('country_id') == $country->id) ? selected : '' }} >{{ $country->name }}</option>
                                     @endforeach
                                 </select>
 
@@ -120,11 +115,11 @@
                             <label for="gender" class="col-md-4 control-label">Select Your Gender</label>
 
                             <div class="col-md-6">
-                                <!-- TODO : optimisation possible du test ? -->
+
                                 <select class="form-control" name="gender" id="gender" required>
                                     <option>Choose...</option>
-                                    <option value="m" @if (old('gender') == 'm')selected @endif >Male</option>
-                                    <option value="f" @if (old('gender') == 'f')selected @endif>Female</option>
+                                    <option value="m" {{ (old('gender') == 'm') ? selected : ''}} >Male</option>
+                                    <option value="f" {{ (old('gender') == 'f') ? selected : ''}} >Female</option>
                                 </select>
 
                                 @if ($errors->has('gender'))
@@ -145,12 +140,7 @@
 
                                     <option>Choose...</option>
                                     @foreach ($personalities as $personality)
-                                        <!-- TODO : optimisation possible du test ? -->
-                                        @if (old('personality') == $personality->id)
-                                            <option value="{{ $personality->id }}" selected>{{ $personality->type }}</option>
-                                        @else
-                                            <option value="{{ $personality->id }}">{{ $personality->type }}</option>
-                                        @endif
+                                        <option value="{{ $personality->id }}" {{ (old('personality') == $personality->id) ? selected : '' }}>{{ $personality->type }}</option>
                                     @endforeach
                                 </select>
 

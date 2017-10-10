@@ -34,7 +34,6 @@ class UserController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            //TODO : Fail alias email
             'lastname' => 'required|string|max:255',
             'firstname' => 'required|string|max:255',
             'alias' => 'string|max:20|unique:users', //TODO : Confirmation en direct ?
@@ -58,14 +57,15 @@ class UserController extends Controller
         $user = User::where('alias', $alias)->firstOrFail();
         $user_qualities = UserQuality::where('user_id',$user->id)->get();
 
-        //TODO : pas dry
         if($alias == Auth::user()->alias){
             $user = Auth::user();
-            return view('profile-auth', compact('user', 'user_qualities'));
+            $view = 'profile-auth';
         }
         else{
-            return view('profile-others', compact('user', 'user_qualities'));
+            $view = 'profile-others';
         }
+
+        return view($view, compact('user', 'user_qualities'));
     }
 
     /**

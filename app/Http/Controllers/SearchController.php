@@ -30,7 +30,6 @@ class SearchController extends Controller
         $term = request('term');
         $results = User::where('alias', 'LIKE', '%'.$term.'%')->get(['alias as label']);
 
-        // TODO : Fais le job mais un peu dégueu...
         $results_array = [];
         foreach ($results as $result) {
             $array = ["label" => $result["label"], "url" => route('profile', $result["label"])];

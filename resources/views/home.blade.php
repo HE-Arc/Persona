@@ -19,18 +19,15 @@
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">Suggestions</div>
-                <!-- TODO : DRY ? -->
                 <div class="panel-body">
                     Random:
                     <ul class="list-inline">
-                        <!-- TODO : Uitliser un use pour les models depuis les views -->
                         @foreach (Auth::user()->getRandomSuggestions() as $randomSuggestion)
                             <li class="list-inline-item"><a href="{{ route('profile', $randomSuggestion->alias) }}">{{ $randomSuggestion->alias }}</a></li>
                         @endforeach
                     </ul>
                     By personality:
                     <ul class="list-inline">
-                        <!-- TODO : Uitliser un use pour les models depuis les views -->
                         @foreach (Auth::user()->getPersonalitySuggestions() as $personalitySuggestion)
                             <li class="list-inline-item"><a href="{{ route('profile', $personalitySuggestion->alias) }}">{{ $personalitySuggestion->alias }}</a></li>
                         @endforeach

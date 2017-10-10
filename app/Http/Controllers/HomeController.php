@@ -40,8 +40,7 @@ class HomeController extends Controller
         // TODO : Fais le job mais un peu dégueu...
         $results_array = [];
         foreach ($results as $result) {
-            $url = route('profile', $result["label"]);
-            $array = ["label" => $result["label"], "url" => $url];
+            $array = ["label" => $result["label"], "url" => route('profile', $result["label"])];
             array_push($results_array, $array);
         }
 

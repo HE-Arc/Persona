@@ -12,6 +12,7 @@ $(document).ready(function(){
 
         $this.autocomplete({
             source: src,
+            minLength: 2,
             select: function(event, ui) {
                 window.location.href = ui.item.url;
             }

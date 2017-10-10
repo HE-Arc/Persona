@@ -43,19 +43,20 @@ class User extends Authenticatable
     ];
 
     /**
-    * Returns three random people from the database
+    * Returns three random suggestions from the database
     *
     */
-    public static function getRandomSuggestions() {
-        return User::inRandomOrder()->limit(3)->get();
+    public function getRandomSuggestions() {
+        return User::where('id', '!=', $this->id)->inRandomOrder()->limit(3)->get();
+
     }
 
     /**
-    * Returns three personality people from the database
+    * Returns three personality suggestions from the database
     *
     */
-    public static function getPersonalitySuggestions($personality) {
-        return User::where('personality_id', $personality)->inRandomOrder()->limit(3)->get();
+    public function getPersonalitySuggestions() {
+        return User::where('personality_id', $this->personality_id)->where('id', '!=', $this->id)->inRandomOrder()->limit(3)->get();
     }
 
     /**

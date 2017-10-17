@@ -187,7 +187,6 @@
                                     @endforeach
                                 </select>
                                 <div class="">
-                                    {{ $tmp_arr_users_qualities[0] }}
                                 </div>
                                 @if ($errors->has('quality_id'))
                                     <span class="help-block">

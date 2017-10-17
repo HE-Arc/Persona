@@ -146,6 +146,7 @@ class UserController extends Controller
 
             if(!empty($request->quality_id)){
                 $data=array();
+                //TODO : surement améliorable (nombre de requêtes pour trouver id)
                 foreach ($request->quality_id as $quality_id) {
                     $tmp_quality_id = Quality::where('quality',$quality_id )->value('id');
                     $data[] = array('user_id'=>$user->id,

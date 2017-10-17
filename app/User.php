@@ -43,19 +43,44 @@ class User extends Authenticatable
     ];
 
     /**
-    * Returns three random people from the database
+    * Returns three random suggestions from the database
     *
     */
-    public static function getRandomFriends() {
-        return User::inRandomOrder()->limit(3)->get();
+    public function getRandomSuggestions() {
+        return User::where('id', '!=', $this->id)->inRandomOrder()->limit(3)->get();
+
     }
 
     /**
-    * Returns three personality people from the database
+    * Returns three personality suggestions from the database
     *
     */
-    public static function getPersonalityFriends($personality) {
-        return User::where('personality_id', $personality)->inRandomOrder()->limit(3)->get();
+    public function getPersonalitySuggestions() {
+        return User::where('personality_id', $this->personality_id)->where('id', '!=', $this->id)->inRandomOrder()->limit(3)->get();
+    }
+
+    /**
+    * Returns friend list of the user
+    *
+    */
+    public function getFriendList() {
+        $request_list = FriendRequest::where('requester_id', $this->id)->where('friendship', 1)->get(['requested_id']);
+
+        $friend_list = array();
+
+        foreach ($request_list as $request){
+            $friend_list[] = User::find($request->requested_id);
+        }
+
+        return $friend_list;
+    }
+
+    public function isMyFriend($id){
+        return FriendRequest::where('requester_id', $id)->where('friendship', 1)->first();
+    }
+
+    public function getNumberOfFriendRequests(){
+        return FriendRequest::where('requested_id', $this->id)->where('friendship', 0)->count();
     }
 
 }

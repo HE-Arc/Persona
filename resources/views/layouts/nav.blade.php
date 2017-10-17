@@ -39,7 +39,15 @@
                                 <a href="{{ route('profile', Auth::user()->alias) }}">My Profile</a>
                             </li>
                             <li>
-                                <a href="{{ route('friend-requests', Auth::user()->alias) }}">Friend Requests</a>
+                                <a href="{{ route('friend-requests', Auth::user()->alias) }}">Friend Requests
+                                    @if ($nbr = Auth::user()->getNumberOfFriendRequests())
+                                        <span class="badge badge-success">{{ $nbr }}</span>
+                                        <span class="sr-only">unread messages</span>
+                                    @endif
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('friends', Auth::user()->alias) }}">My Friends</a>
                             </li>
                             <li>
                                 <a href="{{ route('logout') }}"

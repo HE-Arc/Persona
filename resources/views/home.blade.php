@@ -19,24 +19,17 @@
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">Suggestions</div>
-                <!-- TODO : DRY ? -->
                 <div class="panel-body">
                     Random:
                     <ul class="list-inline">
-                        <!-- TODO : Uitliser un use pour les models depuis les views -->
-                        @foreach (\App\User::getRandomFriends() as $randomFriend)
-                            @if ($randomFriend != Auth::user())
-                                <li class="list-inline-item"><a href="{{ route('profile', $randomFriend->alias) }}">{{ $randomFriend->alias }}</a></li>
-                            @endif
+                        @foreach (Auth::user()->getRandomSuggestions() as $randomSuggestion)
+                            <li class="list-inline-item"><a href="{{ route('profile', $randomSuggestion->alias) }}">{{ $randomSuggestion->alias }}</a></li>
                         @endforeach
                     </ul>
                     By personality:
                     <ul class="list-inline">
-                        <!-- TODO : Uitliser un use pour les models depuis les views -->
-                        @foreach (\App\User::getPersonalityFriends(Auth::user()->personality_id) as $personalityFriend)
-                            @if ($personalityFriend != Auth::user())
-                                <li class="list-inline-item"><a href="{{ route('profile', $personalityFriend->alias) }}">{{ $personalityFriend->alias }}</a></li>
-                            @endif
+                        @foreach (Auth::user()->getPersonalitySuggestions() as $personalitySuggestion)
+                            <li class="list-inline-item"><a href="{{ route('profile', $personalitySuggestion->alias) }}">{{ $personalitySuggestion->alias }}</a></li>
                         @endforeach
                     </ul>
                 </div>

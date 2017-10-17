@@ -8,7 +8,6 @@
                 <div class="panel-heading">
                     <span class="">Profile Edit</span>
                 </div>
-                <!-- TODO : gérer le 's pour les alias qui finissent en S -->
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" action="{{ route('profile-edit', Auth::user()->alias) }}">
                         {{ csrf_field() }}

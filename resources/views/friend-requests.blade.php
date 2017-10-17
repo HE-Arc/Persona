@@ -8,36 +8,31 @@
                 <div class="panel-heading">My Friend Requests</div>
                 <div class="panel-body">
                     @include('layouts.flash_message')
-                    People that requested me as friend :
+                    <b>From :</b>
                     <ul>
                         @foreach ($others_friend_requests as $friend_request)
+                            <?php $requester_alias = \App\User::find($friend_request->requester_id)->alias ?>
                             <li>
-                                Demande d'ami de : {{ $requester_alias = \App\User::find($friend_request->requester_id)->alias }} -
+                                Demande d'ami de : <a href="{{ route('profile', $requester_alias) }}">{{ $requester_alias }}</a> -
                                 <a href="{{ route('add-friend', $requester_alias) }}">Accept</a> -
                                 <a href="{{ route('remove-friend', $requester_alias) }}">Decline</a>
                             </li>
                         @endforeach
                     </ul>
                     <hr>
-                    People that I requested as friend (pending) :
+                    <b>To (pending) :</b>
                     <ul>
                         @foreach ($my_friend_requests as $friend_request)
+                            <?php $requester_alias = \App\User::find($friend_request->requested_id)->alias ?>
                             <li>
-                                Demande d'ami à : {{ $requester_alias = \App\User::find($friend_request->requested_id)->alias }} -
+                                Demande d'ami à : <a href="{{ route('profile', $requester_alias) }}">{{ $requester_alias }}</a> -
                                 <a href="{{ route('remove-friend', $requester_alias) }}">Cancel</a>
                             </li>
                         @endforeach
                     </ul>
                     <hr>
-                    My Friends :
-                    <ul>
-                        @foreach ($my_friends as $friend)
-                            <li>
-                                {{$requester_alias =  \App\User::find($friend->requested_id)->alias }} -
-                                <a href="{{ route('remove-friend', $requester_alias) }}">Remove</a>
-                            </li>
-                        @endforeach
-                    </ul>
+                    <p><b>Click <a href="{{ route('friends', Auth::user()->alias) }}">Here</a> to see your friend list.</b></p>
+
 
                 </div>
             </div>

@@ -20,7 +20,6 @@
                         <a href="{{ route('add-friend', $user->alias) }}" class="pull-right"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add as friend</a>
                     @endif
                 </div>
-                <!-- TODO : gérer le 's pour les alias qui finissent en S -->
                 <div class="panel-body">
                     @include('layouts.flash_message')
                     @if(!empty($relation) && $relation->friendship)<p>Your became friends with {{$user->alias}} {{ $relation->updated_at->diffForHumans() }}</p>@endif

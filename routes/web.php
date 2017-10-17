@@ -56,3 +56,6 @@ Route::get('/user/{alias}/friends', 'FriendRequestController@showFriends')->midd
 
 Route::get('/user/{alias}/edit', 'UserController@showEdit')->middleware('auth')->name('profile-edit');
 Route::post('/user/{alias}/edit', 'UserController@updateFromEdit')->middleware('auth');
+
+Route::post('/chat', 'ChatController@sendMessage');
+Route::get('/chat', 'ChatController@chatPage');

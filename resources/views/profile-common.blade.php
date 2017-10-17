@@ -8,3 +8,9 @@
     <li>{{ $user->country->name }}</li>
     <li>{{ $user->personality->type }}</li>
 </ul>
+
+<ul>
+    @foreach ($arr_users_qualities as $quality)
+        <li>{{ $quality }}</li>
+    @endforeach
+</ul>

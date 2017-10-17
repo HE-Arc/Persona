@@ -17,7 +17,8 @@
                             <label for="alias" class="col-md-4 control-label">Alias</label>
 
                             <div class="col-md-6">
-                                <input id="alias" type="text" class="form-control" name="alias" value="{{ $user->alias }}" required autofocus>
+
+                                <input id="alias" type="text" class="form-control" name="alias" value="{{ empty(old()) ? $user->alias :  old('alias') }}" required autofocus>
 
                                 @if ($errors->has('alias'))
                                     <span class="help-block">
@@ -31,7 +32,7 @@
                             <label for="firstname" class="col-md-4 control-label">Firstname</label>
 
                             <div class="col-md-6">
-                                <input id="firstname" type="text" class="form-control" name="firstname" value="{{ $user->firstname }}" required autofocus>
+                                <input id="firstname" type="text" class="form-control" name="firstname" value="{{ empty(old()) ? $user->firstname :  old('firstname') }}" required autofocus>
 
                                 @if ($errors->has('firstname'))
                                     <span class="help-block">
@@ -45,7 +46,7 @@
                             <label for="lastname" class="col-md-4 control-label">Lastname</label>
 
                             <div class="col-md-6">
-                                <input id="lastname" type="text" class="form-control" name="lastname" value="{{ $user->lastname }}" required autofocus>
+                                <input id="lastname" type="text" class="form-control" name="lastname" value="{{  empty(old()) ? $user->lastname :  old('lastname') }}" required autofocus>
 
                                 @if ($errors->has('lastname'))
                                     <span class="help-block">
@@ -59,7 +60,7 @@
                             <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ $user->email }}" required>
+                                <input id="email" type="email" class="form-control" name="email" value="{{ empty(old()) ? $user->email :  old('email') }}" required>
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -77,9 +78,11 @@
                                 <select class="form-control" name="country_id" id="country_id" required>
 
                                     <option>Choose...</option>
+                                    <?php empty(old()) ? $country_id = $user->country_id : $country_id = old('country_id'); ?>
                                     @foreach ($countries as $country)
                                         <!-- TODO : optimisation possible du test ? -->
-                                        @if ($user->country_id == $country->id)
+
+                                        @if ($country_id == $country->id)
                                             <option value="{{ $country->id }}" selected>{{ $country->name }}</option>
                                         @else
                                             <option value="{{ $country->id }}">{{ $country->name }}</option>
@@ -102,8 +105,10 @@
                                 <!-- TODO : optimisation possible du test ? -->
                                 <select class="form-control" name="gender" id="gender" required>
                                     <option>Choose...</option>
-                                    <option value="m" @if ($user->gender == 'm')selected @endif >Male</option>
-                                    <option value="f" @if ($user->gender == 'f')selected @endif>Female</option>
+
+                                    <?php empty(old()) ? $gender = $user->gender : $gender = old('gender'); ?>
+                                    <option value="m" @if ($gender == 'm')selected @endif >Male</option>
+                                    <option value="f" @if ($gender == 'f')selected @endif>Female</option>
                                 </select>
 
                                 @if ($errors->has('gender'))
@@ -123,6 +128,7 @@
                                 <select class="form-control" name="personality_id" id="personality_id" required>
 
                                     <option>Choose...</option>
+                                    <?php empty(old()) ? $personality_id = $user->personality_id : $personality_id = old('personality_id'); ?>
                                     @foreach ($personalities as $personality)
                                         <!-- TODO : optimisation possible du test ? -->
                                         @if ($user->personality_id == $personality->id)
@@ -146,7 +152,7 @@
                             <label for="birthday" class="col-md-4 control-label">Birthday</label>
 
                             <div class="col-md-6">
-                                <input id="birthday" type="date" class="form-control" name="birthday" value="{{ $user->birthday }}" required autofocus>
+                                <input id="birthday" type="date" class="form-control" name="birthday" value="{{ empty(old()) ? $user->birthday : old('birthday') }}" required autofocus>
 
                                 @if ($errors->has('birthday'))
                                     <span class="help-block">
@@ -161,17 +167,29 @@
 
                             <div class="col-md-6">
 
-                                <select class="form-control" name="quality_id[]" id="quality_id" multiple>
+                                <select class="form-control" name="quality_id[]" id="quality_id" onchange="checkSelected(this);" multiple>
+
+                                    <?php
+                                        $tmp_arr_users_qualities = array();
+                                        empty(old()) ? $tmp_arr_users_qualities = $arr_users_qualities : $tmp_arr_users_qualities = old('quality_id');
+                                        //dump($arr_users_qualities[0]);
+                                        //print_r ($tmp_arr_users_qualities);
+                                        //error_log($tmp_arr_users_qualities[0]);
+                                    ?>
+
                                     @foreach ($qualities as $quality)
                                         <!-- TODO : optimisation possible du test ? -->
-                                        @if (in_array($quality->quality, $arr_users_qualities))
-                                            <option value="{{ $quality->id }}" selected>{{ $quality->quality }}</option>
+
+                                        @if (in_array($quality->quality, $tmp_arr_users_qualities))
+                                            <option value="{{ $quality->quality }}" selected>{{ $quality->quality }}</option>
                                         @else
-                                            <option value="{{ $quality->id }}">{{ $quality->quality }}</option>
+                                            <option value="{{ $quality->quality }}">{{ $quality->quality }}</option>
                                         @endif
                                     @endforeach
                                 </select>
-
+                                <div class="">
+                                    {{ $tmp_arr_users_qualities[0] }}
+                                </div>
                                 @if ($errors->has('quality_id'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('quality_id') }}</strong>

@@ -141,8 +141,8 @@ class UserController extends Controller
             'country_id' => 'required|exists:countries,id',
             'personality_id' => 'required|exists:personalities,id',
             'gender' => ['required', Rule::in(['m', 'f'])],
-            'birthday' => 'required|date'
-            //'quality_id' => 'exists:qualities,id'
+            'birthday' => 'required|date',
+            'quality_id' => 'exists:qualities,quality|max:8'
         ]);
     }
 
@@ -155,15 +155,21 @@ class UserController extends Controller
     public function show($alias)
     {
         $user = User::where('alias', $alias)->firstOrFail();
-        $user_qualities = UserQuality::where('user_id',$user->id)->get();
+        $users_qualities = UserQuality::where('user_id',$user->id)->get();
+
+        $arr_users_qualities=array();
+        // TODO: methode dans model
+        foreach ($users_qualities as $user_quality){
+            $arr_users_qualities[] = Quality::find($user_quality->quality_id)->quality;
+        }
 
         //TODO : pas dry
         if($alias == Auth::user()->alias){
             $user = Auth::user();
-            return view('profile-auth', compact('user', 'user_qualities'));
+            return view('profile-auth', compact('user', 'user_qualities', 'arr_users_qualities'));
         }
         else{
-            return view('profile-others', compact('user', 'user_qualities'));
+            return view('profile-others', compact('user', 'user_qualities', 'arr_users_qualities'));
         }
     }
 
@@ -185,10 +191,11 @@ class UserController extends Controller
 
             $users_qualtities = UserQuality::where('user_id', $user->id)->get();
 
+            //TODO : methode dans model
             $arr_users_qualities=array();
 
             foreach ($users_qualtities as $user_quality){
-                $arr_users_qualities[] = $user_quality->quality;
+                $arr_users_qualities[] = Quality::find($user_quality->quality_id)->quality;
             }
 
             return view('profile-edit', compact('user', 'countries', 'personalities', 'qualities', 'arr_users_qualities'));
@@ -208,15 +215,17 @@ class UserController extends Controller
     public function updateFromEdit(Request $request, $alias)
     {
         $user = Auth::user();
+        $tmp_request = array();
+        $tmp_request = $request->all();
 
         if($user->alias == $alias){
 
              if($request->email == $user->email){
-                unset($request['email']);
+                unset($tmp_request['email']);
              }
 
              if($request->alias == $alias){
-                unset($request['alias']);
+                unset($tmp_request['alias']);
              }
              else{
                $alias = $request->alias;
@@ -224,26 +233,31 @@ class UserController extends Controller
 
              //$user = User::where('alias', $alias)->firstOrFail();
 
-             $this->validator($request->all())->validate();
+             $this->validator($tmp_request)->validate();
 
 
              // this 'fills' the user model with all fields of the Input that are fillable
-             $user->fill($request->all());
+             $user->fill($tmp_request);
              $user->save();
 
             //supprime toutes les qulaités de l'utilisateur.
             UserQuality::where('user_id', $user->id)->delete();
 
-            $data=array();
-            foreach ($request->quality_id as $quality_id) {
-                $data[] = array('user_id'=>$user->id,
-                                'quality_id'=>$quality_id,
-                                "created_at" =>  \Carbon\Carbon::now(), # \Datetime()
-                                "updated_at" => \Carbon\Carbon::now(),  # \Datetime()
-                                );
+
+            if(!empty($request->quality_id)){
+                $data=array();
+                foreach ($request->quality_id as $quality_id) {
+                    $tmp_quality_id = Quality::where('quality',$quality_id )->value('id');
+                    $data[] = array('user_id'=>$user->id,
+                                    'quality_id'=>$tmp_quality_id,
+                                    "created_at" =>  \Carbon\Carbon::now(), # \Datetime()
+                                    "updated_at" => \Carbon\Carbon::now(),  # \Datetime()
+                                    );
+                }
+                UserQuality::insert($data);
             }
 
-            UserQuality::insert($data);
+
 
              return redirect()->route('profile', ['alias' => $alias]);
         }

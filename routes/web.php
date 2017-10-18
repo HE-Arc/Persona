@@ -14,10 +14,11 @@ use App\User;
 */
 
 Route::get('/', function () {
-    if(Auth::check()){
+
+    if (Auth::check()) {
         return view('home');
     }
-    else{
+    else {
         return view('welcome');
     }
 
@@ -57,5 +58,5 @@ Route::get('/user/{alias}/friends', 'FriendRequestController@showFriends')->midd
 Route::get('/user/{alias}/edit', 'UserController@showEdit')->middleware('auth')->name('profile-edit');
 Route::post('/user/{alias}/edit', 'UserController@updateFromEdit')->middleware('auth');
 
-Route::post('/chat', 'ChatController@sendMessage');
-Route::get('/chat', 'ChatController@chatPage');
+Route::post('/chat', 'ChatController@sendMessage')->middleware('auth');
+Route::get('/chat', 'ChatController@index')->middleware('auth');

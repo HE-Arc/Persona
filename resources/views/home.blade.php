@@ -22,14 +22,26 @@
                 <div class="panel-body">
                     Random:
                     <ul class="list-inline">
-                        @foreach (Auth::user()->getRandomSuggestions() as $randomSuggestion)
+                        @foreach (Auth::user()->getRandomSuggestions(3) as $randomSuggestion)
                             <li class="list-inline-item"><a href="{{ route('profile', $randomSuggestion->alias) }}">{{ $randomSuggestion->alias }}</a></li>
                         @endforeach
                     </ul>
                     By personality:
                     <ul class="list-inline">
-                        @foreach (Auth::user()->getPersonalitySuggestions() as $personalitySuggestion)
+                        @foreach (Auth::user()->getPersonalitySuggestions(3) as $personalitySuggestion)
                             <li class="list-inline-item"><a href="{{ route('profile', $personalitySuggestion->alias) }}">{{ $personalitySuggestion->alias }}</a></li>
+                        @endforeach
+                    </ul>
+                    By friends:
+                    <ul class="list-inline">
+                        @foreach (Auth::user()->getFriendsOfFriendsSuggestions(3) as $friendSuggestion)
+                            <li class="list-inline-item"><a href="{{ route('profile', $friendSuggestion->alias) }}">{{ $friendSuggestion->alias }}</a></li>
+                        @endforeach
+                    </ul>
+                    By qualities:
+                    <ul class="list-inline">
+                        @foreach (Auth::user()->getQualitySuggestions(3) as $qualitySuggestion)
+                            <li class="list-inline-item"><a href="{{ route('profile', $qualitySuggestion->alias) }}">{{ $qualitySuggestion->alias }}</a></li>
                         @endforeach
                     </ul>
                 </div>

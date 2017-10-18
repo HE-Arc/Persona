@@ -46,8 +46,8 @@ class User extends Authenticatable
     * Returns three random suggestions from the database
     *
     */
-    public function getRandomSuggestions() {
-        return User::where('id', '!=', $this->id)->inRandomOrder()->limit(3)->get();
+    public function getRandomSuggestions($limit) {
+        return User::where('id', '!=', $this->id)->inRandomOrder()->limit($limit)->get();
 
     }
 

@@ -1,5 +1,5 @@
 <ul>
-    @if ($user->isMyFriend($user->id))
+    @if ($user->isMyFriend($user->id) || Auth::user() == $user)
         <li>{{ $user->firstname }} {{ $user->lastname }}</li>
     @endif
     <li>{{ $user->alias }}</li>

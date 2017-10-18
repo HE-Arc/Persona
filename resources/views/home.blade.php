@@ -22,7 +22,7 @@
                 <div class="panel-body">
                     Random:
                     <ul class="list-inline">
-                        @foreach (Auth::user()->getRandomSuggestions() as $randomSuggestion)
+                        @foreach (Auth::user()->getRandomSuggestions(3) as $randomSuggestion)
                             <li class="list-inline-item"><a href="{{ route('profile', $randomSuggestion->alias) }}">{{ $randomSuggestion->alias }}</a></li>
                         @endforeach
                     </ul>

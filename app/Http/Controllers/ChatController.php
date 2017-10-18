@@ -12,6 +12,7 @@ class ChatController extends Controller
 {
     /**
      * Create a new controller instance.
+     * Based on a tutorial @ https://www.cloudways.com/blog/realtime-chatroom-with-laravel-vuejs-pusher/
      *
      * @return void
      */
@@ -32,12 +33,10 @@ class ChatController extends Controller
         return "true";
     }
 
-    // TODO : Nom de la fonction plutôt 'index' ?
-    public function chatPage()
+    public function index()
     {
         //TODO : Seulement les amis ?
         $users = User::take(10)->get();
-
         return view('chat', compact('users'));
     }
 }

@@ -2,8 +2,6 @@
 
 namespace App;
 
-use App\Country;
-
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -43,20 +41,70 @@ class User extends Authenticatable
     ];
 
     /**
-    * Returns three random suggestions from the database
+    * Returns <number> random suggestions from the database
     *
+    *@param  int $number
     */
-    public function getRandomSuggestions($limit) {
-        return User::where('id', '!=', $this->id)->inRandomOrder()->limit($limit)->get();
+    public function getRandomSuggestions($number) {
+        return User::where('id', '!=', $this->id)->inRandomOrder()->limit($number)->get();
 
     }
 
     /**
-    * Returns three personality suggestions from the database
+    * Returns <number> personality suggestions from the database
     *
+    *@param  int $number
     */
-    public function getPersonalitySuggestions() {
-        return User::where('personality_id', $this->personality_id)->where('id', '!=', $this->id)->inRandomOrder()->limit(3)->get();
+    public function getPersonalitySuggestions($number) {
+        return User::where('personality_id', $this->personality_id)->where('id', '!=', $this->id)->inRandomOrder()->limit($number)->get();
+    }
+
+    /**
+    * Returns <number> quality suggestions from the database
+    *
+    *@param  int $number
+    */
+    public function getQualitySuggestions($number) {
+        $id_list = array();
+        $qualities = User::getQualities();
+
+        //TODO: Je sais plus faire de requêtes SQL... Je pense qu'il y a mieux
+        foreach ($qualities as $quality) {
+            $user_qualities = UserQuality::where('quality_id', $quality->quality_id)->get();
+
+            foreach ($user_qualities as $user_quality) {
+                if (!in_array($user_quality->user_id, $id_list, true) && ($user_quality->user_id != $this->id)) {
+                    $id_list[] = $user_quality->user_id;
+                }
+            }
+        }
+
+        return User::whereIn('id', $id_list)->inRandomOrder()->limit($number)->get();
+    }
+
+    /**
+    * Returns <number> friends of friends suggestions from the database
+    *
+    *@param  int $number
+    */
+    public function getFriendsOfFriendsSuggestions($number) {
+        $final_list = array();
+        $friend_list = User::getFriendList();
+
+        foreach ($friend_list as $friend) {
+            $f_friend_list = User::getFriendListOfUser($friend);
+
+            foreach ($f_friend_list as $f_friend) {
+                if (!in_array($f_friend, $final_list, true) && $f_friend != $this) {
+                    $final_list[] = $f_friend;
+                }
+            }
+        }
+
+        shuffle($final_list);
+        $sliced_array = array_slice($final_list, 0, $number);
+
+        return $sliced_array;
     }
 
     /**
@@ -64,22 +112,34 @@ class User extends Authenticatable
     *
     */
     public function getFriendList() {
-        $request_list = FriendRequest::where('requester_id', $this->id)->where('friendship', 1)->get(['requested_id']);
+        return User::getFriendListOfUser($this);
+    }
 
+    /**
+    * Returns friend list of a user
+    *
+    *@param  User $user
+    */
+    public function getFriendListOfUser($user) {
+        $request_list = FriendRequest::where('requester_id', $user->id)->where('friendship', 1)->get(['requested_id']);
         $friend_list = array();
 
-        foreach ($request_list as $request){
+        foreach ($request_list as $request) {
             $friend_list[] = User::find($request->requested_id);
         }
 
         return $friend_list;
     }
 
-    public function isMyFriend($id){
+    public function getQualities() {
+        return UserQuality::where('user_id', $this->id)->get();
+    }
+
+    public function isMyFriend($id) {
         return FriendRequest::where('requester_id', $id)->where('friendship', 1)->first();
     }
 
-    public function getNumberOfFriendRequests(){
+    public function getNumberOfFriendRequests() {
         return FriendRequest::where('requested_id', $this->id)->where('friendship', 0)->count();
     }
 

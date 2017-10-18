@@ -13,17 +13,15 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-import Vue from "vue"
 import VueResource from "vue-resource"
 import Echo from "laravel-echo"
 import Pusher from "pusher-js"
 
-window.Vue = Vue;
 Vue.use(VueResource);
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: '333e1423dbafed400c63', //Add your pusher key here
+    key: '333e1423dbafed400c63', // Pusher key
     cluster: 'eu',
     encrypted: false
 });
@@ -40,9 +38,10 @@ const app = new Vue({
         chatCount : []
     },
 
-    created(){
-        window.Echo.channel('chat-message' + window.userid).listen('ChatMessage', (e) => {
+    created() {
+        window.Echo.channel('chat-message-' + window.userid).listen('ChatMessage', (e) => {
             console.log(e.user);
+            console.log(window.userid);
             this.userId = e.user.sourceuserid;
 
             if (this.chats[this.userId]) {
@@ -52,7 +51,7 @@ const app = new Vue({
                 console.log("pusher");
                 console.log(this.chats[this.userId]);                   
             } else {
-                this.createChatWindow(e.user.sourceuserid,e.user.name);
+                this.createChatWindow(e.user.sourceuserid, e.user.name);
                 this.$set(app.chats[this.userId], this.chatCount[this.userId] ,e.user);
                 this.chatCount[this.userId]++;
             }            
@@ -80,10 +79,10 @@ const app = new Vue({
                 });
 
                 this.chatCount[this.userId]++;
-                console.log("send");
+                console.log("Send : " + window.username + ", " + this.userId);
             }, response => {
                 this.error = 1;
-                console.log("error");
+                console.log("Error");
                 console.log(response);
             });
         },
@@ -94,8 +93,8 @@ const app = new Vue({
             console.log(this.userId);
         },
 
-        createChatWindow(userid,username){
-            if (!this.chatWindowStatus[userid]) {  
+        createChatWindow(userid, username){
+            if (!this.chatWindowStatus[userid]) {
                 this.chatWindowStatus[userid] = 1;
                 this.chatMessage[userid] = '';
                 this.$set(app.chats, userid , {});

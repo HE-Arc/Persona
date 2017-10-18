@@ -16,15 +16,11 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\FriendRequestController;
 
 
-
 //Pour les validations
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-
-
-
     /**
      * Get a validator for an incoming edit profile request.
      *
@@ -70,6 +66,7 @@ class UserController extends Controller
         else{
             $view = 'profile-others';
         }
+
         return view($view, compact('user', 'user_qualities', 'arr_users_qualities'));
     }
 
@@ -84,7 +81,6 @@ class UserController extends Controller
         $user = Auth::user();
 
         if($user->alias == $alias){
-
             $countries = Country::all();
             $personalities = Personality::all();
             $qualities = Quality::all();
@@ -143,24 +139,28 @@ class UserController extends Controller
             //supprime toutes les qulaités de l'utilisateur.
             UserQuality::where('user_id', $user->id)->delete();
 
+            //récupère tous les id du tableau $request->quality_id
+            $qualities_ids = Quality::select('id')->whereIn('quality',$request->quality_id )->get();
+
+            $iterator_qualities_ids = $qualities_ids->getIterator();
+            $first = 1;
 
             if(!empty($request->quality_id)){
                 $data=array();
-                //TODO : surement améliorable (nombre de requêtes pour trouver id)
+
                 foreach ($request->quality_id as $quality_id) {
-                    $tmp_quality_id = Quality::where('quality',$quality_id )->value('id');
                     $data[] = array('user_id'=>$user->id,
-                                    'quality_id'=>$tmp_quality_id,
+                                    'quality_id'=> $first == 1 ? current($iterator_qualities_ids)->id : next($iterator_qualities_ids)->id,
                                     "created_at" =>  \Carbon\Carbon::now(), # \Datetime()
                                     "updated_at" => \Carbon\Carbon::now(),  # \Datetime()
                                     );
+                    $first = 0;
                 }
+
                 UserQuality::insert($data);
             }
 
-
-
-             return redirect()->route('profile', ['alias' => $alias]);
+            return redirect()->route('profile', ['alias' => $alias]);
         }
         else{
             return abort(404);

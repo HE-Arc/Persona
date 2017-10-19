@@ -67,7 +67,24 @@ class UserController extends Controller
             $view = 'profile-others';
         }
 
-        return view($view, compact('user', 'user_qualities', 'arr_users_qualities'));
+        $nb_friends_personality = array();
+        $friend_list = $user->getFriendList();
+
+        $personnalities = Personality::get();
+
+        //boucle permettant de remplire le tableau avec le nombre d'ami possédant une personalité
+        foreach ($personnalities as $personnality) {
+            $nb_friends_personality += array($personnality->type => 0);
+
+            foreach ($friend_list as $friend) {
+                if($personnality->id == $friend->personality_id)
+                {
+                    //compte le nombre d'ami par personnalité
+                    $nb_friends_personality[$personnality->type] +=1;
+                }
+            }
+        }
+        return view($view, compact('user', 'user_qualities', 'arr_users_qualities', 'nb_friends_personality'));
     }
 
     /**

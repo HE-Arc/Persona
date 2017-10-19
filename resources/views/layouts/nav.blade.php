@@ -12,7 +12,7 @@
 
             <!-- Branding Image -->
             <a class="navbar-brand" href="@guest {{url('/')}} @else {{url('/home')}}  @endguest">
-                {{ config('app.name', 'Laravel') }}
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span><span id="main_title">{{ config('app.name', 'Laravel') }}</span>
             </a>
         </div>
 
@@ -70,7 +70,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Search" id="search" name="search" data-action="{{ route('search-autocomplete') }}" autocomplete="off" required>
                             <div class="input-group-btn">
-                                <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search" id="submit_search" name="submit_search"></i></button>
+                                <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
                             </div>
                         </div>
                     </form>

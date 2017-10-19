@@ -9,17 +9,18 @@
                 <div class="panel-body">
                     @include('layouts.flash_message')
                     <p><b>{{ count($friend_list) }} ami(s) au total</b></p>
-                    <ul>
-                        @foreach ($friend_list as $friend)
-                            <li>
-                                <a href="{{ route('profile', $friend->alias) }}">{{ $friend->alias }}</a> ({{ $friend->firstname }} {{ $friend->lastname }})
-                                @if (Auth::user()->alias == $user->alias)
-                                      - <a href="{{ route('remove-friend', $friend->alias) }}">Remove</a>
-                                @endif
-                            </li>
-                        @endforeach
-                    </ul>
-
+                    @foreach ($friend_list as $friend)
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="text-center">
+                                    <a href="{{ route('profile', $friend->alias) }}">{{ $friend->alias }}</a> ({{ $friend->firstname }} {{ $friend->lastname }})
+                                    @if (Auth::user()->alias == $user->alias)
+                                          <a class="btn btn-default" role="button" href="{{ route('remove-friend', $friend->alias) }}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Remove</a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
 

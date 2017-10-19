@@ -74,7 +74,7 @@ class UsersTableSeeder extends Seeder
         }
 
         $maxRelationPerUser = $limit/2;
-        $chanceOfFriendship = 3;
+        $chanceOfFriendship = 3; // 1/chanceOfFriendship
 
         foreach ($user_ids as $user_id) {
 

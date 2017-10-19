@@ -7,6 +7,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">My Friend Requests</div>
                 <div class="panel-body">
+                    @include('layouts.flash_message')
                     <h2 class="text-center">To you :</h2>
                     @foreach ($others_friend_requests as $friend_request)
                         <?php $requester_alias = \App\User::find($friend_request->requester_id)->alias ?>

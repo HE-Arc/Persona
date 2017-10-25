@@ -14,7 +14,8 @@
                 <div class="panel-body">
                     @include('profile-common')
                 </div>
-                <div class="panel-body" id="donutchart"></div>
+                <div class="panel-body" id="donutchart_personality"></div>
+                <div class="panel-body" id="donutchart_quality"></div>
             </div>
         </div>
     </div>
@@ -28,22 +29,42 @@
         var nb_friends_personality = {!! json_encode($nb_friends_personality) !!};
 
         // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Personality');
-        data.addColumn('number', 'number of friends');
+        var data_personality = new google.visualization.DataTable();
+        data_personality.addColumn('string', 'Personality');
+        data_personality.addColumn('number', 'number of friends');
 
         for (var key in nb_friends_personality){
-            data.addRows([[key, nb_friends_personality[key]]]);
+            data_personality.addRows([[key, nb_friends_personality[key]]]);
         }
 
-        var options = {
+        var options_personality = {
             title: 'Number of friends by personality',
             pieHole: 0.25,
         };
 
-        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart_personality'));
 
-        chart.draw(data, options);
+        chart.draw(data_personality, options_personality);
+
+        var nb_friends_quality = {!! json_encode($nb_friends_quality_name) !!};
+
+        // Create the data table.
+        var data_quality = new google.visualization.DataTable();
+        data_quality.addColumn('string', 'Quality');
+        data_quality.addColumn('number', 'number of friends sharing this quality');
+
+        for (var key in nb_friends_quality){
+            data_quality.addRows([[key, nb_friends_quality[key]]]);
+        }
+
+        var options_quality = {
+            title: 'Number of friends sharing their qualities',
+            pieHole: 0.25,
+        };
+
+        var chart_quality = new google.visualization.PieChart(document.getElementById('donutchart_quality'));
+
+        chart_quality.draw(data_quality, options_quality);
     }
 </script>
 @endsection

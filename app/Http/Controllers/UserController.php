@@ -67,9 +67,9 @@ class UserController extends Controller
             $view = 'profile-others';
         }
 
+        //Graphique des personalités
         $nb_friends_personality = array();
         $friend_list = $user->getFriendList();
-
         $personnalities = Personality::get();
 
         //boucle permettant de remplire le tableau avec le nombre d'ami possédant une personalité
@@ -84,7 +84,33 @@ class UserController extends Controller
                 }
             }
         }
-        return view($view, compact('user', 'user_qualities', 'arr_users_qualities', 'nb_friends_personality'));
+
+        //Graphique des qualités
+        $nb_friends_quality_id =  array();
+        $friend_list = $user->getFriendList();
+
+        //boucle permettant de remplire le tableau avec le nombre d'ami possédant une qualité
+            foreach ($friend_list as $friend) {
+                $friend_qualities = $friend->getQualities();
+
+                foreach ($friend_qualities as $friend_quality) {
+
+                    if (in_array($friend_quality->quality_id, array_keys($nb_friends_quality_id))){
+                        $nb_friends_quality_id[$friend_quality->quality_id] +=1;
+                    }
+                    else{
+                        $nb_friends_quality_id[$friend_quality->quality_id]=1;
+                    }
+                }
+            }
+
+            $nb_friends_quality_name =  array();
+
+            foreach ($nb_friends_quality_id as $key => $value) {
+                $nb_friends_quality_name[Quality::find($key)->quality] = $value;
+            }
+
+        return view($view, compact('user', 'user_qualities', 'arr_users_qualities', 'nb_friends_personality', 'nb_friends_quality_name'));
     }
 
     /**

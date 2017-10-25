@@ -39,20 +39,20 @@ const app = new Vue({
     },
 
     created() {
-        window.Echo.channel('chat-message-' + window.userid).listen('ChatMessage', (e) => {
-            console.log(e.user);
+        window.Echo.channel('chat-message-' + window.userid).listen('ChatMessage', (e) => { //window.userid
+            console.log(e.message);
             console.log(window.userid);
-            this.userId = e.user.sourceuserid;
+            this.userId = e.message.sourceuserid;
 
             if (this.chats[this.userId]) {
                 this.show = 1;
-                this.$set(app.chats[this.userId], this.chatCount[this.userId] ,e.user);
+                this.$set(app.chats[this.userId], this.chatCount[this.userId], e.message);
                 this.chatCount[this.userId]++;
                 console.log("pusher");
                 console.log(this.chats[this.userId]);                   
             } else {
-                this.createChatWindow(e.user.sourceuserid, e.user.name);
-                this.$set(app.chats[this.userId], this.chatCount[this.userId] ,e.user);
+                this.createChatWindow(e.message.sourceuserid, e.message.name);
+                this.$set(app.chats[this.userId], this.chatCount[this.userId], e.message);
                 this.chatCount[this.userId]++;
             }            
         });
@@ -89,7 +89,7 @@ const app = new Vue({
 
         getUserId(event){
             this.userId = event.target.id;
-            this.createChatWindow(this.userId,event.target.innerHTML);
+            this.createChatWindow(this.userId, event.target.innerHTML);
             console.log(this.userId);
         },
 

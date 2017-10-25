@@ -33,7 +33,6 @@ class ChatMessage implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-
-        return ['chat-message-'.$this->message['id']]; //$this->message['id']] //$this->message->id
+        return ['chat-message-'.$this->message['id']];
     }
 }

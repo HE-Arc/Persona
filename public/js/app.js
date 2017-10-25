@@ -775,12 +775,10 @@ __webpack_require__(9);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-// import Vue from "vue"
 
 
 
 
-// window.Vue = Vue;
 Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_resource__["a" /* default */]);
 
 window.Echo = new __WEBPACK_IMPORTED_MODULE_1_laravel_echo___default.a({
@@ -806,19 +804,20 @@ var app = new Vue({
         var _this = this;
 
         window.Echo.channel('chat-message-' + window.userid).listen('ChatMessage', function (e) {
-            console.log(e.user);
+            //window.userid
+            console.log(e.message);
             console.log(window.userid);
-            _this.userId = e.user.sourceuserid;
+            _this.userId = e.message.sourceuserid;
 
             if (_this.chats[_this.userId]) {
                 _this.show = 1;
-                _this.$set(app.chats[_this.userId], _this.chatCount[_this.userId], e.user);
+                _this.$set(app.chats[_this.userId], _this.chatCount[_this.userId], e.message);
                 _this.chatCount[_this.userId]++;
                 console.log("pusher");
                 console.log(_this.chats[_this.userId]);
             } else {
-                _this.createChatWindow(e.user.sourceuserid, e.user.name);
-                _this.$set(app.chats[_this.userId], _this.chatCount[_this.userId], e.user);
+                _this.createChatWindow(e.message.sourceuserid, e.message.name);
+                _this.$set(app.chats[_this.userId], _this.chatCount[_this.userId], e.message);
                 _this.chatCount[_this.userId]++;
             }
         });

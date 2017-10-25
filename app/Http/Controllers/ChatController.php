@@ -12,7 +12,7 @@ class ChatController extends Controller
 {
     /**
      * Create a new controller instance.
-     * Based on a tutorial @ https://www.cloudways.com/blog/realtime-chatroom-with-laravel-vuejs-pusher/
+     * Based on this tutorial @ https://www.cloudways.com/blog/realtime-chatroom-with-laravel-vuejs-pusher/
      *
      * @return void
      */
@@ -35,8 +35,8 @@ class ChatController extends Controller
 
     public function index()
     {
-        //TODO : Seulement les amis ?
-        $users = User::take(10)->get();
+        //TODO : Seulement amis conectés ?
+        $users = Auth::user()->getFriendList();
         return view('chat', compact('users'));
     }
 }

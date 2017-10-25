@@ -18,14 +18,11 @@
                         </div>
                         <div class="panel-collapse" id="collapseOne">
                             <div class="panel-body">
-                                <ul class="chat" id="chat">
-                                    <li class="left clearfix" v-for="chat in chats[chatWindow.senderid]" v-bind:message="chat.message" v-bind:username="chat.username">
-                                        <!-- <span class="chat-img pull-left">
-                                            <img src="https://www.gravatar.com/avatar/{{ md5($chatuser->email) }}?s=64" alt="User Avatar" class="img-circle">
-                                        </span> -->
+                                <ul style="list-style-type:none;" class="chat" id="chat">
+                                    <li sytel="list-style:none;" class="left clearfix" v-for="chat in chats[chatWindow.senderid]" v-bind:message="chat.message" v-bind:username="chat.username">
                                         <div class="chat-body clearfix">
                                             <div class="header">
-                                                <strong class="primary-font"> @{{chat.username}}</strong>
+                                                <strong class="primary-font"> @{{chat.name}}</strong>
                                             </div>
                                             <p>@{{chat.message}}</p>
                                         </div>

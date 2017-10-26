@@ -9,6 +9,7 @@
         @yield('content')
 
     </div>
+        @include('layouts.chatuser')
         @include('layouts.footer')
 </body>
 </html>

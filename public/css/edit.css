@@ -1,0 +1,42 @@
+#div_edit{
+    padding: 0;
+    padding-top: 7px;
+}
+
+.div_edit {
+    margin-right: 0px;
+    padding-left: 0px;
+}
+
+.div_edit, p {
+    width: 150px;
+    margin: 0px;
+    padding: 5px;
+}
+
+#div_sortable1{
+    float: left;
+}
+
+#div_sortable2{
+    float: right;
+}
+
+#sortable1, #sortable2 {
+    border: 1px solid lightgrey;
+    border-radius: 8px;
+    width: 150px;
+    height:400px;
+    overflow-y:scroll;
+    list-style-type: none;
+    margin: 0;
+    padding: 5px;
+
+}
+
+#sortable1 li, #sortable2 li {
+    margin: 0;
+    padding: 0;
+    font-size: 1.2em;
+
+}

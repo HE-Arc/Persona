@@ -27,6 +27,7 @@ class UserController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
+    //TODO : Voir si existe moyen pour avoir un seul validator entre userRegistration et UserController
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -70,17 +71,19 @@ class UserController extends Controller
         //Graphique des personalités
         $nb_friends_personality = array();
         $friend_list = $user->getFriendList();
-        $personnalities = Personality::get();
+        $personalities = Personality::get();
 
-        //boucle permettant de remplire le tableau avec le nombre d'ami possédant une personalité
-        foreach ($personnalities as $personnality) {
-            $nb_friends_personality += array($personnality->type => 0);
+        //TODO : Possible de faire l'éauivelent avec un groupby et un count ?
+
+        //boucle permettant de remplir le tableau avec le nombre d'ami possédant une personalité
+        foreach ($personalities as $personality) {
+            $nb_friends_personality += array($personality->type => 0);
 
             foreach ($friend_list as $friend) {
-                if($personnality->id == $friend->personality_id)
+                if($personality->id == $friend->personality_id)
                 {
                     //compte le nombre d'ami par personnalité
-                    $nb_friends_personality[$personnality->type] +=1;
+                    $nb_friends_personality[$personality->type] +=1;
                 }
             }
         }
@@ -88,6 +91,8 @@ class UserController extends Controller
         //Graphique des qualités
         $nb_friends_quality_id =  array();
         $friend_list = $user->getFriendList();
+
+        //TODO : Possible de faire l'éauivelent avec un groupby et un count ?
 
         //boucle permettant de remplire le tableau avec le nombre d'ami possédant une qualité
             foreach ($friend_list as $friend) {

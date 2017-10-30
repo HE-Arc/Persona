@@ -23,6 +23,27 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the country record associated with the user.
+     */
+    public function country()
+    {
+        return $this->hasOne('App\Country');
+    }
+
+    /**
+     * Get the personality record associated with the user.
+     */
+    public function personality()
+    {
+        return $this->hasOne('App\Personality');
+    }
+
+    public function friendRequest()
+    {
+        return $this->hasMany('App\FriendRequest');
+    }
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array

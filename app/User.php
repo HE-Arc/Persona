@@ -77,7 +77,7 @@ class User extends Authenticatable
     *@param  int $number
     */
     public function getPersonalitySuggestions($number) {
-        return User::where('personality_id', $this->personality_id)->where('id', '!=', $this->id)->inRandomOrder()->limit($number)->get();
+        return User::where(['personality_id' => $this->personality_id, ['id', '!=', $this->id]])->inRandomOrder()->limit($number)->get();
     }
 
     /**
@@ -142,7 +142,8 @@ class User extends Authenticatable
     *@param  User $user
     */
     public function getFriendListOfUser($user) {
-        $request_list = FriendRequest::where('requester_id', $user->id)->where('friendship', 1)->get(['requested_id']);
+        $request_list = FriendRequest::where(['requester_id' => $user->id, 'friendship' => 1])->get(['requested_id']);
+
         $friend_list = array();
 
         foreach ($request_list as $request) {
@@ -161,7 +162,8 @@ class User extends Authenticatable
     }
 
     public function getNumberOfFriendRequests() {
-        return FriendRequest::where('requested_id', $this->id)->where('friendship', 0)->count();
+        //return FriendRequest::where('requested_id', $this->id)->where('friendship', 0)->count();
+        return FriendRequest::where(['requested_id' => $this->id, 'friendship' => 0])->count();
     }
 
 }

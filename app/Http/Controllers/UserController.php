@@ -186,13 +186,12 @@ class UserController extends Controller
             //supprime toutes les qulaités de l'utilisateur.
             UserQuality::where('user_id', $user->id)->delete();
 
-            //récupère tous les id du tableau $request->quality_id
-            $qualities_ids = Quality::select('id')->whereIn('quality',$request->quality_id )->get();
-
-            $iterator_qualities_ids = $qualities_ids->getIterator();
-            $first = 1; //variable servant à savoir si c'est le premier passage ou non
-
             if(!empty($request->quality_id)){
+                
+                //récupère tous les id du tableau $request->quality_id
+                $qualities_ids = Quality::select('id')->whereIn('quality',$request->quality_id )->get();
+                $iterator_qualities_ids = $qualities_ids->getIterator();
+                $first = 1; //variable servant à savoir si c'est le premier passage ou non
                 $data=array();
 
                 //boucle permettant de remplir le tableau avec les id des qualité et l'id de l'utilisateur

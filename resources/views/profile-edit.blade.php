@@ -89,14 +89,8 @@
 
                                     <!-- Boucle remplissant le choix des pays -->
                                     @foreach ($countries as $country)
-
-                                        <!-- TODO : optimisation possible du test ? -->
                                         <!-- Test permettant de selectionner le précédant choix de l'utilisateur -->
-                                        @if ($country_id == $country->id)
-                                            <option value="{{ $country->id }}" selected>{{ $country->name }}</option>
-                                        @else
-                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                        @endif
+                                        <option value="{{ $country->id }}" {{$country_id == $country->id ? 'selected' : ''}}>{{ $country->name }}</option>
                                     @endforeach
                                 </select>
                                 @if ($errors->has('country_id'))
@@ -112,7 +106,6 @@
                         <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
                             <label for="gender" class="col-md-4 control-label">Select Your Gender</label>
                             <div class="col-md-6">
-                                <!-- TODO : optimisation possible du test ? -->
                                 <select class="form-control" name="gender" id="gender" required>
                                     <option>Choose...</option>
 
@@ -122,6 +115,7 @@
                                     <!-- Test permettant de selectionner le précédant choix de l'utilisateur -->
                                     <option value="m" @if ($gender == 'm')selected @endif >Male</option>
                                     <option value="f" @if ($gender == 'f')selected @endif>Female</option>
+
                                 </select>
                                 @if ($errors->has('gender'))
                                     <span class="help-block">
@@ -144,14 +138,8 @@
 
                                     <!-- Boucle remplissant le choix des personalités -->
                                     @foreach ($personalities as $personality)
-
-                                        <!-- TODO : optimisation possible du test ? -->
                                         <!-- Test permettant de selectionner le précédant choix de l'utilisateur -->
-                                        @if ($user->personality_id == $personality->id)
-                                            <option value="{{ $personality->id }}" selected>{{ $personality->type }}</option>
-                                        @else
-                                            <option value="{{ $personality->id }}">{{ $personality->type }}</option>
-                                        @endif
+                                        <option value="{{ $personality->id }}" {{$user->personality_id == $personality->id ? 'selected' : ''}} >{{ $personality->type }}</option>
                                     @endforeach
                                 </select>
                                 @if ($errors->has('personality_id'))
@@ -210,17 +198,15 @@
                                 <!-- Boucle permettant de remplire les listes de qualités-->
                                 @foreach ($qualities as $quality)
                                     <!-- Test permettant de selectionner le précédant choix de l'utilisateur -->
-                                    @if (in_array($quality->quality, $tmp_arr_users_qualities))
-                                        <script type="text/javascript">
+                                    <script type="text/javascript">
+                                        @if (in_array($quality->quality, $tmp_arr_users_qualities))
                                             //crée un nouveau li dans l'ul "sortable2" avec comme text la qualité et comme nom quality_id[]
                                             createList("sortable2", "{{ $quality->quality }}","quality_id[]");
-                                        </script>
-                                    @else
-                                        <script type="text/javascript">
+                                        @else
                                             //crée un nouveau li dans l'ul "sortable1" avec comme text la qualité et comme nom quality_not_id[]
                                             createList("sortable1", "{{ $quality->quality }}","quality_not_id[]");
-                                        </script>
-                                    @endif
+                                        @endif
+                                    </script>
                                 @endforeach
 
                                 @if ($errors->has('quality_id'))

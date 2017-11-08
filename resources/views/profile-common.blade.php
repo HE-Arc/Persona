@@ -1,6 +1,6 @@
 <!-- partie commune au profile authentifié et non authentifié -->
 <ul>
-    <!-- TODO: si disponible uniquement lorsque authentifié pas plutôt dans profile-auth -->
+    <!-- TODO: isMyFriend ne se comporte pas comme voulu -->
     @if ($user->isMyFriend($user->id) || Auth::user() == $user)
         <li>{{ $user->firstname }} {{ $user->lastname }}</li>
     @endif

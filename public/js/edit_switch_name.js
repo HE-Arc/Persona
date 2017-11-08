@@ -4,7 +4,7 @@ $( function() {
         receive: function (event, ui) {
             var element = ui.item;
             if(element.find('input').attr("name") == "quality_id[]"){
-                element.find('input').attr("name", "quality_id_not[]");
+                element.find('input').attr("name", "quality_not_id[]");
             }
             else{
                 if ($("#sortable2").children().length > 8) {

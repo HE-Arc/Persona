@@ -18,9 +18,9 @@
 
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->
-            <ul class="nav navbar-nav">
+            <!-- <ul class="nav navbar-nav">
                 &nbsp;
-            </ul>
+            </ul> -->
 
             <!-- Right Side Of Navbar -->
             <ul class="nav navbar-nav navbar-right">
@@ -65,8 +65,11 @@
                 @endguest
             </ul>
             @auth
-                <div class="col-sm-3 col-md-3 pull-right">
-                    <form class="navbar-form" role="search" action="{{ route('search') }}" method="GET">
+                <div class="col-sx-12 col-sm-8 col-md-6 pull-right">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{{ route('chat') }}">Instant messaging</a></li>
+                    </ul>
+                    <form class="navbar-form navbar-right" role="search" action="{{ route('search') }}" method="GET">
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Search" id="search" name="search" data-action="{{ route('search-autocomplete') }}" autocomplete="off" required>
                             <div class="input-group-btn">

@@ -59,4 +59,4 @@ Route::get('/user/{alias}/edit', 'UserController@showEdit')->middleware('auth')-
 Route::post('/user/{alias}/edit', 'UserController@updateFromEdit')->middleware('auth');
 
 Route::post('/chat', 'ChatController@sendMessage')->middleware('auth');
-Route::get('/chat', 'ChatController@index')->middleware('auth');
+Route::get('/chat', 'ChatController@index')->middleware('auth')->name('chat');

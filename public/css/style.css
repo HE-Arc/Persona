@@ -1,5 +1,10 @@
 /* http://stackoverflow.com/questions/17838380/styling-jquery-ui-autocomplete */
 
+.friends-chat
+{
+    color: #e87878;
+}
+
 .ui-helper-hidden-accessible
 {
     display:none;

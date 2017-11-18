@@ -1,7 +1,7 @@
 <!-- partie commune au profile authentifié et non authentifié -->
 <ul>
     <!-- TODO: isMyFriend ne se comporte pas comme voulu -->
-    @if ($user->isMyFriend($user->id) || Auth::user() == $user)
+    @if (Auth::user()->isMyFriend($user->id) || Auth::user() == $user)
         <li>{{ $user->firstname }} {{ $user->lastname }}</li>
     @endif
     <!-- affichage des information de l'utilisateur-->

@@ -88,14 +88,14 @@ class UsersTableSeeder extends Seeder
                 //Vérifie si le lien n'existe pas deja
                 if(!FriendRequest::getFriendRequestBetweenTwoUsers($user_id, $requested_id)){
 
-                    $reciprocitiy = FriendRequest::getFriendRequestBetweenTwoUsers($requested_id, $user_id);
+                    $reciprocity = FriendRequest::getFriendRequestBetweenTwoUsers($requested_id, $user_id);
 
                     //Vérifie si le lien réciprique existe deja
-                    if($reciprocitiy){
+                    if($reciprocity){
 
                         $friendship = true;
                         //Mise à jour de l'amitié dans l'autre sens
-                        FriendRequest::where('id', $reciprocitiy->id)->update(['friendship' => 1]);
+                        FriendRequest::where('id', $reciprocity->id)->update(['friendship' => 1]);
                     }
                     //Si pas encore de lien, une chance de créer une amitié directement
                     else if($faker->numberBetween(1, $chanceOfFriendship) == 1){

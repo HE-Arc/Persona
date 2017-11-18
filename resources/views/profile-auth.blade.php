@@ -46,7 +46,7 @@
 
         //option appliquées sur le chart des personalités
         var options_personality = {
-            title: 'Number of friends by personality',
+            title: 'Personalities of my friends',
             pieHole: 0.25,
         };
 
@@ -71,7 +71,7 @@
 
         //option appliquées sur le chart des qualités
         var options_quality = {
-            title: 'Number of friends sharing their qualities',
+            title: 'Qualities of my friends',
             pieHole: 0.25,
         };
 

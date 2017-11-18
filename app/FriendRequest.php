@@ -18,12 +18,8 @@ class FriendRequest extends Model
 
 
     public static function getFriendRequestBetweenTwoUsers($requester_id, $requested_id){
+        // TODO : éventuellement passer par $requester->friendRequestsTo->contains(requested) ... plus performant ?
         return FriendRequest::where(['requester_id' => $requester_id, 'requested_id' => $requested_id])->first();
     }
-
-    public static function isFriendRequestBetweenAuthAndUser($alias){
-        return FriendRequest::getFriendRequestBetweenTwoUsers(Auth::user()->id, User::where('alias', $alias)->first()->id);
-    }
-
 
 }

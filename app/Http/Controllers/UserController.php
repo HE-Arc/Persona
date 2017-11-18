@@ -118,59 +118,47 @@ class UserController extends Controller
             $view = 'profile-others';
         }
 
-        //Personalités et graphique
-        $nb_friends_personality = array();
-        $friend_list = $user->getFriendList();
-        $personalities = Personality::get();
+        $nb_friends_personality = collect();
+        $nb_friends_quality_name =  collect();
 
-        //boucle permettant de remplire le tableau avec le nombre d'ami possédant une personalité
-        foreach ($personalities as $personality) {
-            //TODO : Possible de faire l'éauivelent avec un groupby et un count ?
-            $nb_friends_personality += array($personality->type => 0); //rempli les clés du tableau et met les valeurs à 0
+        // Récupère les nom des qualités de l'utilisateur
+        $arr_users_qualities = $user->qualities->pluck('quality');
 
-            foreach ($friend_list as $friend) {
-                if($personality->id == $friend->personality_id)
-                {
-                    //compte le nombre d'ami par personnalité
-                    $nb_friends_personality[$personality->type] +=1;
-                }
+        if($view == 'profile-auth'){
+
+            //Personalités et graphique
+            $friend_list = $user->friends;
+
+            // Ajoute les personnalités des amis à la liste
+            foreach ($friend_list as $friend){
+                $nb_friends_personality->push($friend->personality);
             }
-        }
 
-        //Qualités et graphique
-        $users_qualities = UserQuality::where('user_id',$user->id)->get();
-        $friend_list = $user->getFriendList();
-        $arr_users_qualities=array();
-        $nb_friends_quality_id =  array();
-        $nb_friends_quality_name = array();
+            // Regroupe les personnalités et les compte
+            $nb_friends_personality = $nb_friends_personality->groupBy('type')->map(function ($item, $key) {
+                return collect($item)->count();
+            });
 
-        // TODO: methode dans model
-        foreach ($users_qualities as $user_quality){
-            $arr_users_qualities[] = Quality::find($user_quality->quality_id)->quality; //remplile tableau avec les qualités de l'utilisateur
-        }
+            // -------------------------------------------
 
-        //double boucle permettant de remplire le tableau avec le nombre d'ami possédant une qualité
-        foreach ($friend_list as $friend) {
-            $friend_qualities = $friend->getQualities(); //récupère toutes les qualités des amis de l'utilisateur
+            //Qualités et graphique
 
-            foreach ($friend_qualities as $friend_quality) {
-                //test permettant d'incrémenter si ce n'est pas la première itération ou d'initialiser le compteur sinon
-                if (in_array($friend_quality->quality_id, array_keys($nb_friends_quality_id))){
-                    $nb_friends_quality_id[$friend_quality->quality_id] +=1;
-                }
-                else{
-                    $nb_friends_quality_id[$friend_quality->quality_id]=1;
-                }
+            // Récupère les amis
+            $friend_list = $user->friends;
+
+            // Ajoute les personnalités des amis à la liste
+            foreach ($friend_list as $friend){
+                $nb_friends_quality_name->push($friend->qualities);
             }
+
+            // Regroupe par qualité et en compte le nombre pour chacune
+            $nb_friends_quality_name = $nb_friends_quality_name->flatten()->groupBy('quality')->map(function ($item, $key) {
+                return collect($item)->count();
+            });
         }
 
-        //TODO: peut éviter les réquêtes lors de chaque passage
-        //boulce permettant de récupèrer les noms des qualités depuis l'index
-        foreach ($nb_friends_quality_id as $key => $value) {
-            $nb_friends_quality_name[Quality::find($key)->quality] = $value;
-        }
 
-        return view($view, compact('user', 'user_qualities', 'arr_users_qualities', 'nb_friends_personality', 'nb_friends_quality_name'));
+        return view($view, compact('user', 'arr_users_qualities', 'nb_friends_personality', 'nb_friends_quality_name'));
     }
 
     /**
@@ -188,16 +176,7 @@ class UserController extends Controller
             $personalities = Personality::all();
             $qualities = Quality::all();
 
-            $users_qualtities = UserQuality::where('user_id', $user->id)->get();
-
-            //TODO : methode dans model
-            $arr_users_qualities=array();
-
-            //TODO: peut éviter les réquêtes lors de chaque passage
-            //boulce permettant de récupèrer les noms des qualités depuis l'index
-            foreach ($users_qualtities as $user_quality){
-                $arr_users_qualities[] = Quality::find($user_quality->quality_id)->quality;
-            }
+            $arr_users_qualities = $user->qualities->pluck('quality')->all();
 
             return view('profile-edit', compact('user', 'countries', 'personalities', 'qualities', 'arr_users_qualities'));
         }
@@ -244,8 +223,8 @@ class UserController extends Controller
             UserQuality::where('user_id', $user->id)->delete();
 
             if(!empty($request->quality_id)){
-                
-                //récupère tous les id du tableau $request->quality_id
+
+                //récupère tous les id du tableau pour les noms de qualité correspondants
                 $qualities_ids = Quality::select('id')->whereIn('quality',$request->quality_id )->get();
                 $iterator_qualities_ids = $qualities_ids->getIterator();
                 $first = 1; //variable servant à savoir si c'est le premier passage ou non

@@ -122,21 +122,28 @@ class User extends Authenticatable
     *@param  int $number
     */
     public function getQualitySuggestions($number) {
-        $id_list = array();
-        $qualities = User::getQualities();
+        //Liste finale des utilisateurs random partageant les qualités du user appelant
+        $final_list = collect([]);
 
-        //TODO: Je sais plus faire de requêtes SQL... Je pense qu'il y a mieux
+        //Récupère toutes les qualités de l'utilisateur
+        $qualities = $this->qualities;
+
+        // Parcours les qualités
         foreach ($qualities as $quality) {
-            $user_qualities = UserQuality::where('quality_id', $quality->quality_id)->get();
 
-            foreach ($user_qualities as $user_quality) {
-                if (!in_array($user_quality->user_id, $id_list, true) && ($user_quality->user_id != $this->id)) {
-                    $id_list[] = $user_quality->user_id;
-                }
-            }
+            // TODO : Pas bien s'il y a trop d'utilisateurs /!\
+            // Récupère tous les utilisateurs partageant la qualité en cours
+            $users_sharing_quality = $quality->users;
+
+            //dd($users_sharing_quality);
+
+            // Ajoute la liste de users pour la qualité en cours à la liste finale
+            $final_list = $final_list->concat($users_sharing_quality);
         }
 
-        return User::whereIn('id', $id_list)->inRandomOrder()->limit($number)->get();
+        // Retire les doublons et l'utilisateur appelant
+        // Choisi un certain nombre de users de la liste de manière aléatoire
+        return $final_list->unique()->diff([$this])->random($number);
     }
 
     /**
@@ -145,61 +152,34 @@ class User extends Authenticatable
     *@param  int $number
     */
     public function getFriendsOfFriendsSuggestions($number) {
-        $final_list = array();
-        $friend_list = User::getFriendList();
 
+        //Liste finale des utilisateurs random ayant un amis commun avec l'utilisateur appelant
+        $final_list = collect([]);
+        $friend_list = $this->friends;
+
+        // Parcours les amis
         foreach ($friend_list as $friend) {
-            $f_friend_list = User::getFriendListOfUser($friend);
 
-            foreach ($f_friend_list as $f_friend) {
-                if (!in_array($f_friend, $final_list, true) && $f_friend != $this) {
-                    $final_list[] = $f_friend;
-                }
-            }
+            // TODO : Pas bien s'il y a trop d'utilisateurs /!\
+            // Récupère la liste d'amis de l'ami en cours
+            $f_friend_list = $friend->friends;
+
+            // Ajoute la liste d'amis de l'ami en cours à la liste finale
+            $final_list = $final_list->concat($f_friend_list);
         }
 
-        shuffle($final_list);
-        $sliced_array = array_slice($final_list, 0, $number);
-
-        return $sliced_array;
-    }
-
-    /**
-    * Returns friend list of the user
-    *
-    */
-    public function getFriendList() {
-        return User::getFriendListOfUser($this);
-    }
-
-    /**
-    * Returns friend list of a user
-    *
-    *@param  User $user
-    */
-    public function getFriendListOfUser($user) {
-        $request_list = FriendRequest::where(['requester_id' => $user->id, 'friendship' => 1])->get(['requested_id']);
-
-        $friend_list = array();
-
-        foreach ($request_list as $request) {
-            $friend_list[] = User::find($request->requested_id);
-        }
-
-        return $friend_list;
-    }
-
-    public function getQualities() {
-        return UserQuality::where('user_id', $this->id)->get();
+        // Retire les doublons et l'utilisateur appelant
+        // Choisi un certain nombre de users de la liste de manière aléatoire
+        return $final_list->unique()->diff([$this])->random($number);
     }
 
     public function isMyFriend($id) {
-        return FriendRequest::where('requester_id', $id)->where('friendship', 1)->first();
+        // TODO : éventuellement passer par $this->friends->contains() ... plus performant ?
+        return FriendRequest::where(['requester_id'=> $id, 'requested_id' => $this->id, 'friendship' => 1])->first();
     }
 
     public function getNumberOfFriendRequests() {
-        //return FriendRequest::where('requested_id', $this->id)->where('friendship', 0)->count();
-        return FriendRequest::where(['requested_id' => $this->id, 'friendship' => 0])->count();
+        return $this->friendRequestsFrom->count();
     }
 
 }

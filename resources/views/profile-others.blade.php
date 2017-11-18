@@ -8,7 +8,7 @@
                 <div class="panel-heading">
                     {{ $user->alias }}'s Profile
                     <!-- Request::segment(2) -->
-                    @if ($relation = \App\FriendRequest::isFriendRequestBetweenAuthAndUser($user->alias))
+                    @if ($relation = \App\FriendRequest::getFriendRequestBetweenTwoUsers(Auth::user()->id, $user->id))
                         <a href="{{ route('remove-friend', $user->alias) }}" class="pull-right"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                             @if ($relation->friendship)
                                 Cancel friendship

@@ -10,7 +10,7 @@
                     @include('layouts.flash_message')
                     <h2 class="text-center">To you :</h2>
                     @foreach ($others_friend_requests as $friend_request)
-                        <?php $requester_alias = \App\User::find($friend_request->requester_id)->alias ?>
+                        <?php $requester_alias = $friend_request->alias ?>
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <div class="text-center">
@@ -26,7 +26,7 @@
                     <h2 class="text-center">From you : <small>(pending)</small></h2>
 
                     @foreach ($my_friend_requests as $friend_request)
-                        <?php $requester_alias = \App\User::find($friend_request->requested_id)->alias ?>
+                        <?php $requester_alias = $friend_request->alias ?>
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <div class="text-center">

@@ -9,13 +9,19 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    public function getCountryAttribute(){
-        return Country::find($this->country_id);
-    }
-
-    public function getPersonalityAttribute(){
-        return Personality::find($this->personality_id);
-    }
+    // /**
+    //  * Get the country of a user with user->country
+    //  */
+    // public function getCountryAttribute(){
+    //     return Country::find($this->country_id);
+    // }
+    //
+    // /**
+    //  * Get the personality of a user with user->personality
+    //  */
+    // public function getPersonalityAttribute(){
+    //     return Personality::find($this->personality_id);
+    // }
 
     public function getGenderTextAttribute(){
         if($this->gender == 'm'){ return 'Male'; }
@@ -27,7 +33,7 @@ class User extends Authenticatable
      */
     public function country()
     {
-        return $this->hasOne('App\Country');
+        return $this->belongsTo('App\Country', 'country_id', 'id');
     }
 
     /**
@@ -35,13 +41,43 @@ class User extends Authenticatable
      */
     public function personality()
     {
-        return $this->hasOne('App\Personality');
+        return $this->belongsTo('App\Personality', 'personality_id', 'id');
     }
 
-    public function friendRequest()
+    /**
+    * Get the people that the user requested as friends.
+    */
+    public function friendRequestsTo()
     {
-        return $this->hasMany('App\FriendRequest');
+      return $this->belongsToMany('App\User', 'friend_requests', 'requester_id', 'requested_id')->as('friendRequest')->withTimestamps()->withPivot('friendship')->wherePivot('friendship', 0);
     }
+
+    /**
+    * Get the people that requested the user as their friend.
+    */
+    public function friendRequestsFrom()
+    {
+      return $this->belongsToMany('App\User', 'friend_requests', 'requested_id', 'requester_id')->as('friendRequest')->withTimestamps()->withPivot('friendship')->wherePivot('friendship', 0);
+    }
+
+    /**
+    * Get the people that are friends with the user.
+    */
+    public function friends()
+    {
+      return $this->belongsToMany('App\User', 'friend_requests', 'requester_id', 'requested_id')->as('friendRequest')->withTimestamps()->withPivot('friendship')->wherePivot('friendship', 1);
+    }
+
+    /**
+    * Get the qualities of a user.
+    */
+    public function qualities()
+    {
+      return $this->belongsToMany('App\Quality', 'user_qualities');
+    }
+
+
+
 
     /**
      * The attributes that are mass assignable.

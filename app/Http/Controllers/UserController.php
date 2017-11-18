@@ -43,6 +43,63 @@ class UserController extends Controller
         ]);
     }
 
+    public function showTest($alias)
+    {
+
+        $user = User::where('alias', $alias)->firstOrFail();
+        echo '<h1>My personality</h1>';
+        echo $user->personality->type;
+
+        echo '<h1>People with the same personality</h1>';
+        echo $user->personality->users;
+
+        // dd($user->personality->users);
+        // dd($user->personality);
+
+        $auth = Auth::user();
+        //dd($user->friendRequestsTo);
+        //dd($auth->friendRequestsFrom);
+        //dd($auth->friends);
+
+
+        echo '<h1>My requests to :</h1>';
+        foreach ($auth->friendRequestsTo as $fr_user) {
+            echo($fr_user->friendRequest->friendship . ' ');
+            echo($fr_user->alias . ' ');
+            echo($fr_user->friendRequest->created_at . '<br>');
+        }
+
+        echo '<h1>My requests from :</h1>';
+        foreach ($auth->friendRequestsFrom as $fr_user) {
+            echo($fr_user->friendRequest->friendship . ' ');
+            echo($fr_user->alias . ' ');
+            echo($fr_user->friendRequest->created_at . '<br>');
+        }
+
+        echo '<h1>My friends :</h1>';
+        foreach ($auth->friends as $fr_user) {
+            echo($fr_user->friendRequest->friendship . ' ');
+            echo($fr_user->alias . ' ');
+            echo($fr_user->friendRequest->created_at . '<br>');
+        }
+
+        echo '<h1>My qualities :</h1>';
+        foreach ($auth->qualities as $quality) {
+            echo($quality->quality . '<br>');
+            $tmp_qual = $quality;
+        }
+
+        echo '<h1>Users sharing my last quality :</h1>';
+        foreach ($tmp_qual->users as $user) {
+            echo($user->alias . '<br>');
+        }
+
+        dd();
+
+
+        return view('test');
+    }
+
     /**
      * Display the specified resource.
      *

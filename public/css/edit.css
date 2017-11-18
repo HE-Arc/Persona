@@ -8,7 +8,7 @@
     padding-left: 0px;
 }
 
-.div_edit, p {
+.div_edit, .div_edit p {
     width: 150px;
     margin: 0px;
     padding: 5px;

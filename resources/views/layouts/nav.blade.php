@@ -65,9 +65,9 @@
                 @endguest
             </ul>
             @auth
-                <div class="col-sx-12 col-sm-8 col-md-6 pull-right">
+                <div class="col-sx-12 col-sm-6 col-md-4 pull-right">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="{{ route('chat') }}">Instant messaging</a></li>
+                        <li><a class="messaging" href="{{ route('chat') }}"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span></a></li>
                     </ul>
                     <form class="navbar-form navbar-right" role="search" action="{{ route('search') }}" method="GET">
                         <div class="input-group">

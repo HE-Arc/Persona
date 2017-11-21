@@ -8,6 +8,7 @@ use App\Personality;
 use App\FriendRequest;
 use App\Quality;
 use App\UserQuality;
+use App\Http\Requests\UserPost;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,34 +16,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\FriendRequestController;
 
-
-//Pour les validations
-use Illuminate\Validation\Rule;
-
 class UserController extends Controller
 {
-    /**
-     * Get a validator for an incoming edit profile request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    //TODO : Voir si existe moyen pour avoir un seul validator entre userRegistration et UserController
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'lastname' => 'required|string|max:255',
-            'firstname' => 'required|string|max:255',
-            'alias' => 'string|max:20|unique:users', //TODO : Confirmation en direct ?
-            'email' => 'string|email|max:255|unique:users',
-            'country_id' => 'required|exists:countries,id',
-            'personality_id' => 'required|exists:personalities,id',
-            'gender' => ['required', Rule::in(['m', 'f'])],
-            'birthday' => 'required|date',
-            'quality_id' => 'exists:qualities,quality|max:8'
-        ]);
-    }
-
     public function showTest($alias)
     {
 
@@ -192,29 +167,14 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateFromEdit(Request $request, $alias)
+     //UserPost valide la requête avant de continuer
+    public function updateFromEdit(UserPost $request, $alias)
     {
         $user = Auth::user();
         $tmp_request = array();
         $tmp_request = $request->all();
 
         if($user->alias == $alias){
-
-             if($request->email == $user->email){
-                unset($tmp_request['email']);
-             }
-
-             if($request->alias == $alias){
-                unset($tmp_request['alias']);
-             }
-             else{
-               $alias = $request->alias;
-             }
-
-             //$user = User::where('alias', $alias)->firstOrFail();
-             $this->validator($tmp_request)->validate();
-
-
              // this 'fills' the user model with all fields of the Input that are fillable
              $user->fill($tmp_request);
              $user->save();
@@ -249,5 +209,4 @@ class UserController extends Controller
             return abort(404);
         }
     }
-
 }

@@ -143,7 +143,11 @@ class User extends Authenticatable
 
         // Retire les doublons et l'utilisateur appelant
         // Choisi un certain nombre de users de la liste de manière aléatoire
-        return $final_list->unique()->diff([$this])->random($number);
+        $final_list = $final_list->unique()->diff([$this]);
+        if($final_list->count() >= $number){
+            return $final_list->random($number);
+        }
+        return $final_list;
     }
 
     /**
@@ -170,7 +174,11 @@ class User extends Authenticatable
 
         // Retire les doublons et l'utilisateur appelant
         // Choisi un certain nombre de users de la liste de manière aléatoire
-        return $final_list->unique()->diff([$this])->random($number);
+        $final_list = $final_list->unique()->diff([$this]);
+        if($final_list->count() >= $number){
+            return $final_list->random($number);
+        }
+        return $final_list;
     }
 
     public function isMyFriend($id) {

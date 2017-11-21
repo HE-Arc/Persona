@@ -99,7 +99,7 @@
 
                                     <option>Choose...</option>
                                     @foreach ($countries as $country)
-                                        <option value="{{ $country->id }}" {{ (old('country_id') == $country->id) ? selected : '' }} >{{ $country->name }}</option>
+                                        <option value="{{ $country->id }}" {{ (old('country_id') == $country->id) ? 'selected' : '' }} >{{ $country->name }}</option>
                                     @endforeach
                                 </select>
 
@@ -118,8 +118,8 @@
 
                                 <select class="form-control" name="gender" id="gender" required>
                                     <option>Choose...</option>
-                                    <option value="m" {{ (old('gender') == 'm') ? selected : ''}} >Male</option>
-                                    <option value="f" {{ (old('gender') == 'f') ? selected : ''}} >Female</option>
+                                    <option value="m" {{ (old('gender') == 'm') ? 'selected' : ''}} >Male</option>
+                                    <option value="f" {{ (old('gender') == 'f') ? 'selected' : ''}} >Female</option>
                                 </select>
 
                                 @if ($errors->has('gender'))
@@ -140,7 +140,7 @@
 
                                     <option>Choose...</option>
                                     @foreach ($personalities as $personality)
-                                        <option value="{{ $personality->id }}" {{ (old('personality') == $personality->id) ? selected : '' }}>{{ $personality->type }}</option>
+                                        <option value="{{ $personality->id }}" {{ (old('personality_id') == $personality->id) ? 'selected' : '' }}>{{ $personality->type }}</option>
                                     @endforeach
                                 </select>
 

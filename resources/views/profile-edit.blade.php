@@ -201,10 +201,10 @@
                                     <script type="text/javascript">
                                         @if (in_array($quality->quality, $tmp_arr_users_qualities))
                                             //crée un nouveau li dans l'ul "sortable2" avec comme text la qualité et comme nom quality_id[]
-                                            createList("sortable2", "{{ $quality->quality }}","quality_id[]");
+                                            createList("sortable2", <?php echo json_encode($quality->quality) ?>,"quality_id[]");
                                         @else
                                             //crée un nouveau li dans l'ul "sortable1" avec comme text la qualité et comme nom quality_not_id[]
-                                            createList("sortable1", "{{ $quality->quality }}","quality_not_id[]");
+                                            createList("sortable1", <?php echo json_encode($quality->quality) ?>,"quality_not_id[]");
                                         @endif
                                     </script>
                                 @endforeach

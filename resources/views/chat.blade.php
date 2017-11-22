@@ -4,16 +4,30 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Friends</div>
-                <div class="panel-body">
-                    <ul class="list-inline">
-                        @foreach($users as $chatuser)
-                        <li class="friends-chat" v-on:click="getUserId" class="list-inline-item" id="{{ $chatuser->id }}" value="{{ $chatuser->alias }}">{{ $chatuser->alias }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
+            <nav class="navbar navbar-sub">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <div class="navbar-brand" style="margin: 0px;">Friends</div>
+                    </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            @foreach($users as $chatuser)
+                                <li>
+                                    <a class="friends-chat" v-on:click="getUserId" id="{{ $chatuser->id }}" value="{{ $chatuser->alias }}">{{ $chatuser->alias }}</a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
             <div v-for="(chatWindow, index) in chatWindows" v-bind:sendid="index.senderid" v-bind:name="index.name">
                 <div class="panel panel-default">
                     <div class="panel-heading" id="accordion">

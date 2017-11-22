@@ -19,31 +19,64 @@
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">Suggestions</div>
-                <div class="panel-body">
-                    Random:
-                    <ul class="list-inline">
-                        @foreach (Auth::user()->getRandomSuggestions(3) as $randomSuggestion)
-                            <li class="list-inline-item"><a href="{{ route('profile', $randomSuggestion->alias) }}">{{ $randomSuggestion->alias }}</a></li>
-                        @endforeach
-                    </ul>
-                    By personality:
-                    <ul class="list-inline">
-                        @foreach (Auth::user()->getPersonalitySuggestions(3) as $personalitySuggestion)
-                            <li class="list-inline-item"><a href="{{ route('profile', $personalitySuggestion->alias) }}">{{ $personalitySuggestion->alias }}</a></li>
-                        @endforeach
-                    </ul>
-                    By friends:
-                    <ul class="list-inline">
-                        @foreach (Auth::user()->getFriendsOfFriendsSuggestions(3) as $friendSuggestion)
-                            <li class="list-inline-item"><a href="{{ route('profile', $friendSuggestion->alias) }}">{{ $friendSuggestion->alias }}</a></li>
-                        @endforeach
-                    </ul>
-                    By qualities:
-                    <ul class="list-inline">
-                        @foreach (Auth::user()->getQualitySuggestions(3) as $qualitySuggestion)
-                            <li class="list-inline-item"><a href="{{ route('profile', $qualitySuggestion->alias) }}">{{ $qualitySuggestion->alias }}</a></li>
-                        @endforeach
-                    </ul>
+                    <div class="panel-body">
+                        <p><b>Random:</b></p>
+                        <div class="row">
+                            @foreach (Auth::user()->getRandomSuggestions(3) as $randomSuggestion)
+                                <div class="col-sx-12 col-sm-6 col-md-4">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="text-center">
+                                                <a href="{{ route('profile', $randomSuggestion->alias) }}">{{ $randomSuggestion->alias }}</a>
+                                            </div>                                      
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <p><b>Personality:</b></p>
+                        <div class="row">
+                            @foreach (Auth::user()->getPersonalitySuggestions(3) as $personalitySuggestion)
+                                <div class="col-sx-12 col-sm-6 col-md-4">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="text-center">
+                                                <a href="{{ route('profile', $personalitySuggestion->alias) }}">{{ $personalitySuggestion->alias }}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <p><b>Friends:</b></p>
+                        <div class="row">
+                            @foreach (Auth::user()->getFriendsOfFriendsSuggestions(3) as $friendSuggestion)
+                                <div class="col-sx-12 col-sm-6 col-md-4">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="text-center">
+                                                <a href="{{ route('profile', $friendSuggestion->alias) }}">{{ $friendSuggestion->alias }}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <p><b>Qualities:</b></p>
+                        <div class="row">
+                            @foreach (Auth::user()->getQualitySuggestions(3) as $qualitySuggestion)
+                                <div class="col-sx-12 col-sm-6 col-md-4">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="text-center">
+                                                <a href="{{ route('profile', $qualitySuggestion->alias) }}">{{ $qualitySuggestion->alias }}</a></li>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

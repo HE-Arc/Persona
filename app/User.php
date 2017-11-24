@@ -131,7 +131,7 @@ class User extends Authenticatable
         // Parcours les qualités
         foreach ($qualities as $quality) {
 
-            // TODO : Pas bien s'il y a trop d'utilisateurs /!\
+            // NOTE : Pas bien s'il y a trop d'utilisateurs /!\
             // Récupère tous les utilisateurs partageant la qualité en cours
             $users_sharing_quality = $quality->users;
 
@@ -164,7 +164,7 @@ class User extends Authenticatable
         // Parcours les amis
         foreach ($friend_list as $friend) {
 
-            // TODO : Pas bien s'il y a trop d'utilisateurs /!\
+            // NOTE : Pas bien s'il y a trop d'utilisateurs /!\
             // Récupère la liste d'amis de l'ami en cours
             $f_friend_list = $friend->friends;
 
@@ -182,7 +182,7 @@ class User extends Authenticatable
     }
 
     public function isMyFriend($id) {
-        // TODO : éventuellement passer par $this->friends->contains() ... plus performant ?
+        // NOTE : éventuellement passer par $this->friends->contains() ... plus performant ?
         return FriendRequest::where(['requester_id'=> $id, 'requested_id' => $this->id, 'friendship' => 1])->first();
     }
 

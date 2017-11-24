@@ -35,7 +35,7 @@ class ChatController extends Controller
 
     public function index()
     {
-        //TODO : Seulement amis conectés ?
+        // NOTE : Seulement amis conectés ?
         $users = Auth::user()->friends;
         return view('chat', compact('users'));
     }

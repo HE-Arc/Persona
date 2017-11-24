@@ -15,7 +15,7 @@ class CreateFriendRequestsTable extends Migration
     {
         Schema::create('friend_requests', function (Blueprint $table) {
             $table->increments('id');
-            //TODO : L'idéal serait une clé primaire ou au moins d'unicité sur un regroupement des deux clés étrangères
+            // NOTE : L'idéal serait une clé primaire ou au moins d'unicité sur un regroupement des deux clés étrangères
             $table->integer('requester_id')->index()->unsigned();
             $table->foreign('requester_id')->references('id')->on('users')->onDelete('CASCADE');
             $table->integer('requested_id')->index()->unsigned();

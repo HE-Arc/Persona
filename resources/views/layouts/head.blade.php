@@ -12,8 +12,13 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ secure_asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ secure_asset('css/style.css') }}" rel="stylesheet">
-    <link href="{{ secure_asset('css/edit.css') }}" rel="stylesheet">
-
+    @if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+        <link href="{{ secure_asset('css/app.css') }}" rel="stylesheet">
+        <link href="{{ secure_asset('css/style.css') }}" rel="stylesheet">
+        <link href="{{ secure_asset('css/edit.css') }}" rel="stylesheet">
+    @else
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/edit.css') }}" rel="stylesheet">
+    @endif
 </head>

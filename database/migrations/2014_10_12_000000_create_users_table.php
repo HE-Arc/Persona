@@ -22,9 +22,9 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->integer('country_id')->unsigned();
-            $table->foreign('country_id')->references('id')->on('countries')->onDelete('SET NULL');
+            //$table->foreign('country_id')->references('id')->on('countries')->onDelete('SET NULL');
             $table->integer('personality_id')->unsigned();
-            $table->foreign('personality_id')->references('id')->on('personalities')->onDelete('SET NULL');
+            //$table->foreign('personality_id')->references('id')->on('personalities')->onDelete('SET NULL');
             //$table->string('description');
             $table->char('gender', 1);
             $table->date('birthday');
@@ -33,6 +33,11 @@ class CreateUsersTable extends Migration
             //$table->boolean('chatstatus')->default(1);
             $table->rememberToken();
             $table->timestamps();
+        });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('SET NULL');
+            $table->foreign('personality_id')->references('id')->on('personalities')->onDelete('SET NULL');
         });
     }
 

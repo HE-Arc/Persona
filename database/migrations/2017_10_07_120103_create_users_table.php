@@ -21,9 +21,9 @@ class CreateUsersTable extends Migration
             $table->string('lastname');
             $table->string('email')->unique();
             $table->string('password');
-            $table->integer('country_id')->index()->unsigned();
+            $table->integer('country_id')->index()->unsigned()->nullable();
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('SET NULL');
-            $table->integer('personality_id')->index()->unsigned();
+            $table->integer('personality_id')->index()->unsigned()->nullable();
             $table->foreign('personality_id')->references('id')->on('personalities')->onDelete('SET NULL');
             //$table->string('description');
             $table->char('gender', 1);

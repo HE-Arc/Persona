@@ -35,10 +35,10 @@ class CreateUsersTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('users', function (Blueprint $table) {
-            $table->foreign('country_id')->references('id')->on('countries')->onDelete('SET NULL');
-            $table->foreign('personality_id')->references('id')->on('personalities')->onDelete('SET NULL');
-        });
+        // Schema::table('users', function (Blueprint $table) {
+        //     $table->foreign('country_id')->references('id')->on('countries')->onDelete('SET NULL');
+        //     $table->foreign('personality_id')->references('id')->on('personalities')->onDelete('SET NULL');
+        // });
     }
 
     /**

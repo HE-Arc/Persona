@@ -10,27 +10,17 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
 
-        <!-- Javascript -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script>
-            $(document).ready(function(){
-                $(".fade-in").hide(0).fadeIn({queue: false, duration: 3000});
-                $(".m-b-md").animate({'margin-bottom': '+=15px'}, 3000);
-            });
-        </script>
-
         <!-- Styles -->
         <style>
             html, body {
-                background-color: #fff;
+                background-color: black;
                 color: snow;
                 font-family: 'Raleway', sans-serif;
                 font-weight: 100;
                 height: 100vh;
                 margin: 0;
+                background-size: cover;
                 background: url({{ secure_asset('welcome.jpg') }}) no-repeat center center fixed;
-                -webkit-background-size: cover; /* pour anciens Chrome et Safari */
-                background-size: cover; /* version standardisée */
             }
 
             .full-height {
@@ -57,7 +47,6 @@
                 position: absolute;
                 left: 10px;
                 bottom: 18px;
-                opacity: 0.7;
             }
 
             .content {
@@ -68,17 +57,7 @@
                 font-size: 84px;
             }
 
-            .links {
-                text-shadow: 0px 1px 8px rgba(0, 0, 0, 0.4);
-                color: snow;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-transform: uppercase;
-            }
-
-            .links > a {
+            .links, a {
                 text-shadow: 0px 1px 8px rgba(0, 0, 0, 0.4);
                 color: snow;
                 padding: 0 25px;
@@ -89,15 +68,28 @@
                 text-decoration: none;
             }
 
-            .m-b-md {
-                margin-bottom: 0px;
+            .fadein {
+                animation: fadein 4s ease-in-out forwards;
+            }
+
+            .moveup {
+                animation: moveup 3s ease-out forwards;
+            }
+
+            @keyframes fadein {
+                from {opacity: 0;} to {opacity: 1;}
+            }
+
+            @keyframes moveup {
+                from {opacity: 0;} to {opacity: 1;}
+                from {margin-bottom: 0px;} to {margin-bottom: 15px;}
             }
         </style>
     </head>
     <body>
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
-                <div class="top-right links fade-in">
+                <div class="top-right links fadein">
                     @auth
                         <a href="{{ url('/home') }}">Home</a>
                     @else
@@ -108,14 +100,14 @@
             @endif
 
             <div class="content">
-                <div class="title m-b-md fade-in">
+                <div class="title moveup">
                     {{ config('app.name', 'Laravel') }}
                 </div>
 
-                <div class="links m-b-md fade-in">
+                <div class="links moveup">
                     <b>your new home</b>
                 </div>
-                <div class="bottom-left links fade-in">
+                <div class="bottom-left links fadein">
                     <a href="https://www.klassencreate.ca/">Background image © 2017 Klassen Create</a>
                 </div>
             </div>

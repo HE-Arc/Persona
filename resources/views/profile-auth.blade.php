@@ -14,6 +14,8 @@
                 <div class="panel-body">
                     @include('profile-common')
                 </div>
+
+                <hr>
                 <!-- div affichant les donuts charts -->
                 <div class="panel-body" id="donutchart_personality"></div>
                 <div class="panel-body" id="donutchart_quality"></div>

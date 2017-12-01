@@ -22,7 +22,6 @@
                 </div>
                 <div class="panel-body">
                     @include('layouts.flash_message')
-                    @if(!empty($relation) && $relation->friendship)<p>Your became friends with {{$user->alias}} {{ $relation->updated_at->diffForHumans() }}</p>@endif
                     @include('profile-common')
                 </div>
             </div>

@@ -8,7 +8,7 @@
                 <div class="panel-heading">My Friends</div>
                 <div class="panel-body">
                     @include('layouts.flash_message')
-                    <p><b>{{ count($friend_list) }} ami(s) au total</b></p>
+                    <p><b>{{ count($friend_list) }} friend(s)</b></p>
                     @foreach ($friend_list as $friend)
                         <div class="panel panel-default">
                             <div class="panel-body">

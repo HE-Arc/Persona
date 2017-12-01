@@ -112,8 +112,57 @@ class User extends Authenticatable
     *
     *@param  int $number
     */
-    public function getPersonalitySuggestions($number) {
+    public function getSamePersonalitySuggestions($number) {
         return User::where(['personality_id' => $this->personality_id, ['id', '!=', $this->id]])->inRandomOrder()->limit($number)->get();
+    }
+
+    /**
+    * Returns <number> personality suggestions from the database
+    *
+    *@param  int $number
+    */
+    public function getMatchingPersonalitySuggestions($number) {
+
+        // TODO: Solution rapide : AURAIT DU ETRE FAIT DANS UNE TABLE DE LA BASE en relation reflexive sur Personality
+        $matching_array = array ("INTJ" => array("ENFP", "INTP", "ISTJ"),
+                                 "INTP" => array("ISTP", "ENTJ", "INFP"),
+                                 "ENTJ" => array("ESTJ", "ESTP", "ISTJ"),
+                                 "ENTP" => array("ISFJ", "ENTJ", "ESFP"),
+
+                                 "INFJ" => array("INTP", "ESTJ", "ISFP"),
+                                 "INFP" => array("ESFJ", "ESTP", "ESTJ"),
+                                 "ENFJ" => array("ESFJ", "ISFJ", "INFJ"),
+                                 "ENFP" => array("INFP", "ENTP", "ENTJ"),
+
+                                 "ISTJ" => array("ESTJ", "ESTP", "ESFP"),
+                                 "ISFJ" => array("ESFJ", "ENFJ", "INTJ"),
+                                 "ESTJ" => array("INTJ", "INTP", "ISFP"),
+                                 "ESFJ" => array("ISTP", "INTP", "INFJ"),
+
+                                 "ISTP" => array("ENTP", "INFJ", "ISTP"),
+                                 "ISFP" => array("ENFJ", "ENFP", "INTJ"),
+                                 "ESTP" => array("ISFP", "ENFP", "ENFJ"),
+                                 "ESFP" => array("ISTP", "INTJ", "INTP"),
+
+                                );
+
+        $final_users_list = collect([]);
+
+        foreach ($matching_array[$this->personality->type] as $matching_personality) {
+          $final_users_list = $final_users_list->concat(Personality::where(['type' => $matching_personality])->first()->users);
+        }
+
+        foreach ($matching_array[$this->personality->type] as $matching_personality) {
+          $final_users_list = $final_users_list->concat(Personality::where(['type' => $matching_personality])->first()->users);
+        }
+
+        $final_users_list = $final_users_list->unique();
+
+        if($final_users_list->count() >= $number){
+            return $final_users_list->random($number);
+        }
+
+        return $final_users_list;
     }
 
     /**

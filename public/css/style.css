@@ -285,3 +285,18 @@ fieldset[disabled] .navbar-sub .btn-link:hover,
 fieldset[disabled] .navbar-sub .btn-link:focus {
   color: #ccc;
 }
+
+/* USER'S PROFILE */
+
+#profile-image1 {
+    cursor: pointer;
+
+     width: 100px;
+    height: 100px;
+	border:2px solid #e87878 ;}
+	.tital{ font-size:16px; font-weight:500;}
+	 .bot-border{ border-bottom:1px #f8f8f8 solid;  margin:5px 0  5px 0}
+
+.box-info ul{
+  padding-left:15px;
+}

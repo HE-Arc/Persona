@@ -20,7 +20,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Suggestions</div>
                     <div class="panel-body">
-                        <p><b>Random:</b></p>
+                        <p><b>Random users:</b></p>
                         <div class="row">
                             @foreach (Auth::user()->getRandomSuggestions(3) as $randomSuggestion)
                                 <div class="col-sx-12 col-sm-6 col-md-4">
@@ -28,15 +28,15 @@
                                         <div class="panel-body">
                                             <div class="text-center">
                                                 <a href="{{ route('profile', $randomSuggestion->alias) }}">{{ $randomSuggestion->alias }}</a>
-                                            </div>                                      
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
-                        <p><b>Personality:</b></p>
+                        <p><b>Users with the same personality as you:</b></p>
                         <div class="row">
-                            @foreach (Auth::user()->getPersonalitySuggestions(3) as $personalitySuggestion)
+                            @foreach (Auth::user()->getSamePersonalitySuggestions(3) as $personalitySuggestion)
                                 <div class="col-sx-12 col-sm-6 col-md-4">
                                     <div class="panel panel-default">
                                         <div class="panel-body">
@@ -48,7 +48,21 @@
                                 </div>
                             @endforeach
                         </div>
-                        <p><b>Friends:</b></p>
+                        <p><b>Users with a matching (friend) personality:</b></p>
+                        <div class="row">
+                            @foreach (Auth::user()->getMatchingPersonalitySuggestions(3) as $personalitySuggestion)
+                                <div class="col-sx-12 col-sm-6 col-md-4">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="text-center">
+                                                <a href="{{ route('profile', $personalitySuggestion->alias) }}">{{ $personalitySuggestion->alias }}</a> ({{ $personalitySuggestion->personality->type }})
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <p><b>Friends of your friends:</b></p>
                         <div class="row">
                             @foreach (Auth::user()->getFriendsOfFriendsSuggestions(3) as $friendSuggestion)
                                 <div class="col-sx-12 col-sm-6 col-md-4">
@@ -62,7 +76,7 @@
                                 </div>
                             @endforeach
                         </div>
-                        <p><b>Qualities:</b></p>
+                        <p><b>Users sharing a quality with you:</b></p>
                         <div class="row">
                             @foreach (Auth::user()->getQualitySuggestions(3) as $qualitySuggestion)
                                 <div class="col-sx-12 col-sm-6 col-md-4">

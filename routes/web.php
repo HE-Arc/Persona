@@ -12,6 +12,9 @@ use App\User;
 | contains the "web" middleware group. Now create something great!
 |
 */
+if (env('APP_ENV') === 'production') {
+    URL::forceScheme('https');
+}
 
 Route::get('/', function () {
 

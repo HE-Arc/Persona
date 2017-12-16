@@ -143,7 +143,7 @@
                                         <option value="{{ $personality->id }}" {{ (old('personality_id') == $personality->id) ? 'selected' : '' }}>{{ $personality->type }}</option>
                                     @endforeach
                                 </select>
-
+                                Don't know your personality yet? Try <a href="https://www.16personalities.com/" target="_blank">this quick test</a>!
                                 @if ($errors->has('personality_id'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('personality_id') }}</strong>

@@ -179,6 +179,11 @@ class UserController extends Controller
              $user->fill($tmp_request);
              $user->save();
 
+             // Récupère le nouvel alias s'il a changé (pour redirection)
+             if(array_key_exists('alias', $tmp_request)){
+               $alias = $tmp_request['alias'];
+             }
+
             //supprime toutes les qulaités de l'utilisateur.
             UserQuality::where('user_id', $user->id)->delete();
 

@@ -22,7 +22,7 @@
                     <div class="panel-body">
                         <p><b>Random users:</b></p>
                         <div class="row">
-                            @foreach (Auth::user()->getRandomSuggestions(3) as $randomSuggestion)
+                            @forelse (Auth::user()->getRandomSuggestions(3) as $randomSuggestion)
                                 <div class="col-sx-12 col-sm-6 col-md-4">
                                     <div class="panel panel-default">
                                         <div class="panel-body">
@@ -32,11 +32,15 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
+                            @empty
+                                <div class="col-sx-12 col-sm-6 col-md-4">
+                                    <p>No user corresponding</p>
+                                </div>
+                            @endforelse
                         </div>
                         <p><b>Users with the same personality as you:</b></p>
                         <div class="row">
-                            @foreach (Auth::user()->getSamePersonalitySuggestions(3) as $personalitySuggestion)
+                            @forelse (Auth::user()->getSamePersonalitySuggestions(3) as $personalitySuggestion)
                                 <div class="col-sx-12 col-sm-6 col-md-4">
                                     <div class="panel panel-default">
                                         <div class="panel-body">
@@ -46,11 +50,15 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
+                            @empty
+                                <div class="col-sx-12 col-sm-6 col-md-4">
+                                    <p>No user corresponding</p>
+                                </div>
+                            @endforelse
                         </div>
                         <p><b>Users with a matching (friend) personality:</b></p>
                         <div class="row">
-                            @foreach (Auth::user()->getMatchingPersonalitySuggestions(3) as $personalitySuggestion)
+                            @forelse (Auth::user()->getMatchingPersonalitySuggestions(3) as $personalitySuggestion)
                                 <div class="col-sx-12 col-sm-6 col-md-4">
                                     <div class="panel panel-default">
                                         <div class="panel-body">
@@ -60,11 +68,15 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
+                            @empty
+                                <div class="col-sx-12 col-sm-6 col-md-4">
+                                    <p>No user corresponding</p>
+                                </div>
+                            @endforelse
                         </div>
                         <p><b>Friends of your friends:</b></p>
                         <div class="row">
-                            @foreach (Auth::user()->getFriendsOfFriendsSuggestions(3) as $friendSuggestion)
+                            @forelse (Auth::user()->getFriendsOfFriendsSuggestions(3) as $friendSuggestion)
                                 <div class="col-sx-12 col-sm-6 col-md-4">
                                     <div class="panel panel-default">
                                         <div class="panel-body">
@@ -74,11 +86,15 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
+                            @empty
+                                <div class="col-sx-12 col-sm-6 col-md-4">
+                                    <p>No user corresponding</p>
+                                </div>
+                            @endforelse
                         </div>
                         <p><b>Users sharing a quality with you:</b></p>
                         <div class="row">
-                            @foreach (Auth::user()->getQualitySuggestions(3) as $qualitySuggestion)
+                            @forelse (Auth::user()->getQualitySuggestions(3) as $qualitySuggestion)
                                 <div class="col-sx-12 col-sm-6 col-md-4">
                                     <div class="panel panel-default">
                                         <div class="panel-body">
@@ -88,7 +104,11 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
+                            @empty
+                                <div class="col-sx-12 col-sm-6 col-md-4">
+                                    <p>No user corresponding</p>
+                                </div>
+                            @endforelse
                         </div>
                     </div>
                 </div>

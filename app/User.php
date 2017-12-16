@@ -103,8 +103,10 @@ class User extends Authenticatable
     *@param  int $number
     */
     public function getRandomSuggestions($number) {
-        return User::where('id', '!=', $this->id)->inRandomOrder()->limit($number)->get();
+        $users_list = User::inRandomOrder()->limit($number)->get();
 
+        // Retire les users déjà amis et l'utilisateur appelant
+        return $this->removeFriendsFromCollectionAndSelf($users_list);
     }
 
     /**
@@ -113,7 +115,9 @@ class User extends Authenticatable
     *@param  int $number
     */
     public function getSamePersonalitySuggestions($number) {
-        return User::where(['personality_id' => $this->personality_id, ['id', '!=', $this->id]])->inRandomOrder()->limit($number)->get();
+        $users_list = User::where(['personality_id' => $this->personality_id])->inRandomOrder()->limit($number)->get();
+        // Retire les users déjà amis et l'utilisateur appelant
+        return $this->removeFriendsFromCollectionAndSelf($users_list); 
     }
 
     /**
@@ -158,6 +162,9 @@ class User extends Authenticatable
 
         $final_users_list = $final_users_list->unique();
 
+        // Retire les users déjà amis et l'utilisateur appelant
+        $final_users_list = $this->removeFriendsFromCollectionAndSelf($final_users_list);
+
         if($final_users_list->count() >= $number){
             return $final_users_list->random($number);
         }
@@ -190,9 +197,12 @@ class User extends Authenticatable
             $final_list = $final_list->concat($users_sharing_quality);
         }
 
-        // Retire les doublons et l'utilisateur appelant
+        // Retire les doublons
+        $final_list = $final_list->unique(); // ->diff([$this]); Ne fonctionne pas car les Users sont différents ?
+        // Retire les users déjà amis et l'utilisateur appelant
+        $final_list = $this->removeFriendsFromCollectionAndSelf($final_list);
+
         // Choisi un certain nombre de users de la liste de manière aléatoire
-        $final_list = $final_list->unique()->diff([$this]);
         if($final_list->count() >= $number){
             return $final_list->random($number);
         }
@@ -221,9 +231,12 @@ class User extends Authenticatable
             $final_list = $final_list->concat($f_friend_list);
         }
 
-        // Retire les doublons et l'utilisateur appelant
+        // Retire les doublons
+        $final_list = $final_list->unique(); // ->diff([$this]); Ne fonctionne pas car les Users sont différents ?
+        // Retire les users déjà amis et l'utilisateur appelant
+        $final_list = $this->removeFriendsFromCollectionAndSelf($final_list);
+
         // Choisi un certain nombre de users de la liste de manière aléatoire
-        $final_list = $final_list->unique()->diff([$this]);
         if($final_list->count() >= $number){
             return $final_list->random($number);
         }
@@ -237,6 +250,22 @@ class User extends Authenticatable
 
     public function getNumberOfFriendRequests() {
         return $this->friendRequestsFrom->count();
+    }
+
+    private function removeFriendsFromCollectionAndSelf($inital_collection){
+
+        $friends = $this->friends;
+
+        // Créer un tableau avec les alias des amis de l'utilisateur
+        $alias_array = [];
+        foreach ($friends as $friend) {
+            array_push($alias_array, $friend->alias);
+        }
+        // Ajout du pseudo de l'utilisateur appelant
+        array_push($alias_array, $this->alias);
+
+        // Retourne la collection sans les personnes portant les alias identifés
+        return $inital_collection->whereNotIn('alias', $alias_array);
     }
 
 }
